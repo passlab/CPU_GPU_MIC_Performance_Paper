@@ -1,0 +1,19 @@
+   \vspace{-1mm} 
+High performance computing using accelerators or co-processors has been popular. In addition to CPU, Nvidia GPU and Intel Xeon Phi Many Integrated Cores (MIC) have gradually become two main architectures in the market of high performance and scientific applications, which requires high throughput and intensive computing power. MIC employs a classic x86 based (many-core) architecture and uses classical programming languages such as C/C++/FORTRAN with OpenMP/MPI \cite{R:6,R:20} while GPU uses a totally different architecture and programming language such as CUDA \cite{R:21}. 
+
+The architectures and programming models of MIC are similar to CPUs, but are highly different from GPU. This heterogeneity results in a difficult problem how we can compare heterogeneous architectures comprehensively and then choose the best accelerator or coprocessors for specific applications to get the best performance and overall efficiency. Understanding the performance characteristics of heterogeneous architectures can help us in designing more efficient applications, choosing the appropriate accelerators for an application, and developing more effective task scheduling and mapping strategies. In this paper, we investigate and analyze the performance of representative benchmarks of Rodinia \cite{R:1} within different domains on CPU, GPU and MIC architectures. 
+
+The development of heterogeneous architectures promotes researchers to develop a lot of benchmark suites to evaluate the emerging class of architectures and to find out the strength and weakness between heterogeneous architectures. The most popular open source benchmark suites targeting heterogeneous architectures include Rodinia, Parboil \cite{R:2} and the Scalable Heterogeneous Computing (SHOC) \cite{R:3}. These benchmark suites provide applications implemented in different programming models for heterogeneous architectures and fulfill roles similar to PARSEC \cite{R:4} and SPEC \cite{R:5} that are other popular benchmark suites managed by an industry consortium. These benchmarks also help architects study programming models and applications concurrently. 
+
+The Rodinia applications are designed for heterogeneous computing infrastructures using OpenMP, CUDA, and OpenCL \cite{R:7} targeting CPUs and GPUs to evaluate these two architectures separately. It provides representative real world applications from multiple domains such as Data Mining, Linear Algebra, Fluid Dynamics, Graph Algorithms, Physics Simulation ,Bioinformatics, etc. We carry out a set of comprehensive performance analysis by using the OpenMP and CUDA programming models for these applications.  Although the performance analysis is our main motivating purpose, our metric and approaches for comprehensive performance analysis can be used for other heterogeneous benchmark such as Parboil and SHOC. 
+  
+
+This paper makes the following contributions: 
+  
+\begin{itemize}    
+\item  We present a comprehensive performance analysis including performance, power consumption, temperature, productivity and monetary cost for five representative benchmarks of Rodinia on CPU, Nvidia GPU and Intel MIC architectures.    
+\item  We evaluate the performance efficiency with regard to practical and theoretical performance, energy efficiency with regard to performance and power consumption, and monetary cost efficiency with regard to performance and monetary cost of the three architectures.    
+\item  We propose a unified efficiency metric to compare the overall benefits of the three architectures.
+\end{itemize}
+
+The rest of the paper is organized as follows: Section II reviews the related work. Section III describes the overview of architectures and programming models. Section IV provides short overview of benchmarks of Rodinia. Section V presents comprehensive performance analysis of the benchmarks for CPU, GPU, and MIC. Section VI concludes the paper.

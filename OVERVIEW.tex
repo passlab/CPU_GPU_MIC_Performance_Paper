@@ -1,0 +1,66 @@
+\vspace{-1mm} 
+
+Before diving into the description of our contribution, we introduce the state-of-the-art heterogeneous architectures and corresponding programming models for comprehensive performance analysis.
+
+\subsection{Multi-core CPU Architecture\\}
+\vspace{-4mm} 
+  Instead of increasing clock frequencies, the growth of parallelism has become the main purpose of traditional CPUs, which relies strongly on the increase of processor clock speed to increase the ability of computing. A multicore CPU is possible where each core is an independent processor containing multiple parallel pipelines, each pipeline being superscalar. Some processors also include vector capability. In addition, vector processing units have evolved to new instruction sets and longer vector registers. At the same time, modern CPU employs Non-uniform memory access (NUMA), which is a computer memory design used in multiprocessing, where the memory access time depends on the memory location relative to the processor. Under NUMA, CPU can access its own local memory faster than non-local memory (memory local to another processor or memory shared between processors). In addition, the CPU architecture is resource-rich running for task and data parallelism in the applications by using AVX extensions (Advanced Vector Extensions) to quickly operate on floating-point vectors.
+  
+\subsection{Graphics Processing Units (GPU) Architecture\\}
+\vspace{-4mm} 
+With the requirement and potential of accelerators for high performance computing, Nvidia develops Tesla series that are designed for massively parallel processing and large scale computing, which goes far beyond basic graphics controller functions, and is a programmable and powerful computational accelerator for the high performance computing mark. For the architecture, CPUs are much different from GPUs. CPUs are composed of few cores with lots of cache memory. It handles a few software threads at a time. In contrast, GPUs are composed of hundreds of cores that can handle thousands of threads simultaneously.
+  
+\subsection{Many Integrated Core (MIC) Architecture\\}
+  \vspace{-4mm} 
+With the growing success of GPUs as a massively parallel processor well suited to more general purpose applications, Intel has introduced a line of products based on a Many Integrated Core (MIC) architecture, marketed under the name Xeon Phi. The Xeon Phi co-processors are symmetric multi-processors; they physically look similar to a GPU in that they plug into a host system via PCI Express (PCIe). They run a Linux Operating System. However, a Xeon Phi coprocessor cannot be used as a stand-alone processor, and requires a host system to operate.
+  
+From an architectural perspective, they also have many similarities to GPUs. Xeon Phi is based on an x86 Pentium core architecture from the early 1990s. This is a much simplified and hence smaller core compared to modern x86 CPUs. To make these simplified cores more computationally powerful, 512-bit-wide vector units have been added to the core. Because of the simplified nature of the core, each co-processor features 60+ cores clocked at 1 GHz or more, supporting 64-bit x86 instructions. The exact number of cores depends on the model and the generation of the product. These in-order cores support four-way hyper-threading, resulting in more than 240 logical cores. The cores of an Xeon Phi coprocessor are interconnected by a high speed bidirectional ring, which unites the L2 caches of the cores into a large coherent aggregate cache over 30 MB in size. The coprocessor is equipped with 6 to 16 GB of on-board GDDR5 memory. The speed and energy efficiency of Xeon Phi coprocessors come from their vector units. Each core contains a vector-processing unit (VPU) with 512-bit SIMD (Single Instruction Multiple Data) vectors supporting a new instruction set called Intel Initial Many-Core Instructions (Intel IMCI). The Intel IMCI includes, among other instructions the Fused Multiply-Add (FMA), reciprocal, square root, power and exponential function operations, commonly used in physical modeling and statistical analysis\cite{R:22}.
+  
+\subsection{Programming Models\\}
+\vspace{-4mm} 
+The programming tools and languages employed for code development for MICs are the same as those used for CPUs. This is a significant advantage as compared to GPUs that alleviates code migration overhead for the co-processor. For the applications, the implement uses OpenMP for MIC and CPU, and uses CUDA for GPU. MIC supports two execution modes: native and offload. In the native mode the application runs entirely within the co-processor. The offload mode allows for CPU to execute regions of the application code with the co-processor. These regions are defined using pragma tags and include directives for transferring data. The offload mode also supports conditional offload directives, which may be used to decide at runtime whether a region should be offloaded to the co-processor or should be executed on CPU. This feature is used in the applications. Since we execute the codes on MIC using the offload mode, a computing core is reserved to run the offload daemon, and a maximum of 240 computing cores are launched.
+  
+  
+  \section{RODINIA BENCHMARK SUITE}
+
+  Ever growing field of HPC requires parallel benchmarks to facilitate research in architecture, programming languages, and operating systems. Rodinia currently presents OpenMP and CUDA implementations of a set of applications to use as benchmarks in the architecture, compiler, and programming-language research. It provides codes, which are reference implementations for research on parallelizing compilers as well as design patterns. For users to develop their own parallel codes, the benchmark is basically intended to evaluate the performance of heterogeneous computing. It incorporates applications and distinguishes kernels targeting the multicore architectures. To reflect major computational kernels in real-world scientific and engineering applications, this work focuses on five representative benchmarks, i.e., LUD, CFD, NW, BFS and HotSpot. Table \ref{tab:benchmarks} provides a summary of Berkeley dwarves \cite{asanovic2006landscape}, domains and problem size for the benchmarks. 
+
+
+  LU Decomposition (LUD) is an algorithm to calculate the solutions of a set of linear equations. The LUD kernel decomposes a matrix as the product of a lower triangular matrix and an upper triangular matrix. This application has many row-wise and column-wise interdependencies and requires significant optimization to achieve good parallel performance.
+
+
+
+  Computational Fluid Dynamics (CFD) is an unstructured-grid, finite-volume solver for the three- dimensional Euler equations for compressible flow \cite{R:26}. Effective GPU memory bandwidth is improved by reducing total global memory accesses and overlapping redundant computation, as well as by using an appropriate numbering scheme and data layout. The CFD solver is released with two versions: one with pre-computed fluxes, and the other with redundant flux computations.
+
+\vspace{-2mm}
+
+    % Table generated by Excel2LaTeX from sheet 'Sheet1'
+\begin{table}[htbp]
+  \centering
+    \caption{RODINIA BENCHMARK SUITE}
+  \begin{adjustbox}{width=0.5\textwidth}
+    \begin{tabular}{cccc}
+    \toprule
+    Applications & Dwarves & Domains & Problem Size  \\
+    \midrule
+    LUD & Dense Linear Algebra & Linear Algebra & 12000 \\
+    CFD & Unstructured Grid & Fluid Dynamics & 193000 \\
+    NW & Dynamic Programming & Bioinformatics & 32000 \\
+    BFS & Graph Traversal & Graph Algorithms & 64Million \\
+    HotSpot & Structured Grid & Physics Simulation & 1024 \\
+    \bottomrule
+    \end{tabular}%
+    \label{tab:benchmarks}
+  \end{adjustbox}
+
+\end{table}% 
+
+\vspace{-1mm}
+
+  Needleman-Wunsch (NW) is a dynamic programming algorithm for sequence alignments, which builds up the best alignment by using optimal alignments of smaller subsequences. It consists of three steps: initialization of the score matrix, calculation of scores, and deducing the alignment from the score matrix. The second step is parallelized.
+
+  Breath-First Search (BFS) is the Breadth-First Search that is an algorithm for traversing or searching tree or graph data structures and explores the neighbor nodes first before moving to the next level neighbored.
+
+  HotSpot is a widely used tool \cite{R:24} to estimate processor temperature based on an architectural floor plan and simulated power measurements. The thermal simulation iteratively solves a series of differential equations for block. Each output cell in the computational grid represents the average temperature value of corresponding area of the chip.
+
+  
