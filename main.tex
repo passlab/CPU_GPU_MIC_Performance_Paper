@@ -1,0 +1,73 @@
+\documentclass[10pt,pageno]{jpaper}
+\usepackage{graphicx}
+\usepackage{adjustbox}
+\usepackage{amsmath}
+\usepackage[font={footnotesize}]{caption}
+\usepackage[figurename=Fig.]{caption}
+\usepackage[normalem]{ulem}
+\usepackage[compact]{titlesec}
+\graphicspath{ {./Pictures/} }
+
+\titlespacing{\section}{0pt}{2ex}{1ex}
+\titlespacing{\subsection}{0pt}{1ex}{0ex}
+\titlespacing{\subsubsection}{0pt}{0.5ex}{0ex}
+
+\renewcommand\thesection{\Roman{section}}
+\renewcommand\thesubsection{\Alph{subsection}}
+
+
+
+\begin{document}
+
+\title{
+Comprehensive Analysis of CPUs, GPUs and Intel Xeon Phi: Performance, Energy, and Efficiency}
+
+\author{Jiawen Liu, Yonghong Yan \\
+Department of Computer Science and Engineering\\
+Oakland University\\
+\{jliu, yan\}@oakland.edu
+}
+
+\date{}
+
+\maketitle
+
+\thispagestyle{empty}
+\begin{small}
+ \textbf{\textit{Abstract}—In the area of high performance computing (HPC), parallel benchmarks are constantly used to explore and evaluate the performance of heterogeneous computing systems on the horizon. 
+Most previous and related work concentrates on measuring the performance of emerging heterogeneous architectures that consist of multi-core CPU, GPU and Intel Xeon Phi architectures, while other factors such as 
+power consumption, efficiency and cost are considered as less important metrics.  
+In this paper, we report our systematical evaluation of five representative benchmarks of Rodinia on modern CPU, GPU, and Intel Xeon Phi in terms of performance, 
+power consumption, temperature, productivity and monetary cost. 
+We propose a unified metric that combines those results as a means for overall comparison of the three architectures. 
+The metric helps users to comprehensively evaluate heterogeneous architecture from both software and hardware perspectives.}
+
+\textbf{\textit{Keywords}—Performance analysis, heterogeneous architecture, benchmark suite, power consumption, temperature, productivity, Xeon Phi coprocessor, Nvidia GPU}
+
+\end{small}
+
+\section{INTRODUCTION}
+\label{sec:INTRODUCTION}
+\input{INTRODUCTION}
+
+\section{RELATED WORK}
+\label{sec:RELATED_WORK}
+\input{RELATED_WORK}
+
+\section{OVERVIEW OF ARCHITECTURES AND PROGRAMMING MODELS}
+\label{sec:OVERVIEW}
+\input{OVERVIEW}
+
+\section{COMPREHENSIVE PERFORMANCE ANALYSIS}
+\label{sec:PERFORMANCE}
+\input{PERFORMANCE}
+
+\section{CONCLUSION}
+\label{sec:CONCLUSION}
+\input{CONCLUSION}
+
+\bibliographystyle{IEEEtranS}
+\bibliography{references}
+
+\end{document}
+
