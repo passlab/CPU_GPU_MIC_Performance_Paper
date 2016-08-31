@@ -6,7 +6,7 @@ and realizes single instruction multiple thread execution model
 that excels in processing data parallel workloads in which inter-core
 communication are minimum. 
 MIC employs a hybrid architecture combining classic x86 based many-core architecture (\verb#~#70 cores) 
-and enhanced vector processing units, thus able to deliver performance improvement for applications with either task parallelsm or data parallel, or
+and enhanced vector processing units, thus able to deliver performance improvement for applications with either task parallelism or data parallel, or
 the mix of both than conventional CPUs.  
 
 The architectures and programming models of MIC are similar to CPUs,
@@ -14,10 +14,10 @@ allowing for easier migration of legacy applications that were developed for mul
 to use the hardware processing capability. Programming languages such as C/C++/FORTRAN with OpenMP/MPI~\cite{R:6,R:20} are available for programming
 on CPU and MICs. 
 GPUs employ a totally different architecture and execution model than CPU/MIC, as well as new programming model such as CUDA~\cite{R:21}. Though 
-existing programing models, such as OpenMP and OpenACC have been enhanced with goals to provide 
+existing programming models, such as OpenMP and OpenACC have been enhanced with goals to provide 
 a unified model for programming CPU/GPU/MIC, performance
 computing for real-world application on those architectures still rely on vendor-specific solutions, especially before robust implementations of 
-those models are available for supporting all the three architecutures. 
+those models are available for supporting all the three architectures. 
 
 %have . 
 %Both MIC and CPU are however highly different from GPU. 
@@ -34,7 +34,7 @@ and developing more effective task scheduling and mapping strategies. In this pa
 efficiency, power consumption, energy efficiency, temperature, productivity and cost of the three architectures using representative 
 benchmarks of Rodinia~\cite{R:1}. 
 Our work differs from other related works that concentrate on the comparison of performance and/or energy 
-consumption of two or three of architectures on specific applications~\cite{R:8, R:9, halyo2014first, andrade2014efficient, bernaschi2014multi, R:10, R:12, R:11} by providing a comprehensive analysis of those metrics. We thus
+consumption of two or three of architectures on specific applications~\cite{R:8, R:9, R:10, R:12, R:11} by providing a comprehensive analysis of those metrics. We thus
 providing more insightful guidance for users in selecting accelerators for applications.  
 % within different domains on CPU, GPU and MIC architectures. 
 This paper makes the following contributions: 
@@ -47,9 +47,10 @@ This paper makes the following contributions:
 
   
 \begin{itemize}    
-\item  We present a comprehensive performance analysis including performance, power consumption, temperature, productivity and monetary cost for five representative benchmarks of Rodinia on CPU, Nvidia GPU and Intel MIC architectures.    
+\item  We present a comprehensive performance analysis including performance, power consumption, temperature, productivity and monetary cost for five representative benchmarks of Rodinia on CPU, Nv-idia GPU and Intel MIC architectures.    
 \item  We evaluate the performance efficiency with regard to practical and theoretical performance, energy efficiency with regard to performance and power consumption, and monetary cost efficiency with regard to performance and monetary cost of the three architectures.    
 \item  We propose a unified efficiency metric to compare the overall benefits of the three architectures.
 \end{itemize}
 
-The rest of the paper is organized as follows: Section II reviews the related work. Section III describes the overview of architectures and programming models. Section IV provides short overview of benchmarks of Rodinia. Section V presents comprehensive performance analysis of the benchmarks for CPU, GPU, and MIC. Section VI concludes the paper.
+The rest of the paper is organized as follows: Section II reviews the related work. %Section III describes the overview of architectures and programming models. 
+Section III provides short overview of benchmarks of Rodinia. Section IV presents comprehensive performance analysis of the benchmarks for CPU, GPU, and MIC. Section V concludes the paper.
