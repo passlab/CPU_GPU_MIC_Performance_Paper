@@ -6,18 +6,18 @@ and realizes single instruction multiple thread execution model
 that excels in processing data parallel workloads in which inter-core
 communication are minimum. 
 MIC employs a hybrid architecture combining classic x86 based many-core architecture (\verb#~#70 cores) 
-and enhanced vector processing units, thus able to deliver performance improvement for applications with either task parallelism or data parallel, or
-the mix of both than conventional CPUs.  
+and enhanced vector processing units, thus able to deliver performance improvement for applications with either task parallelsm or data parallel, or
+the mix of both than conventional CPUs. The power envolops of these accelerators and CPUs are also different in both idle and loaded states. 
 
 The architectures and programming models of MIC are similar to CPUs,
 allowing for easier migration of legacy applications that were developed for multicore CPUs
 to use the hardware processing capability. Programming languages such as C/C++/FORTRAN with OpenMP/MPI~\cite{R:6,R:20} are available for programming
 on CPU and MICs. 
 GPUs employ a totally different architecture and execution model than CPU/MIC, as well as new programming model such as CUDA~\cite{R:21}. Though 
-existing programming models, such as OpenMP and OpenACC have been enhanced with goals to provide 
+existing programing models, such as OpenMP and OpenACC have been enhanced with goals to provide 
 a unified model for programming CPU/GPU/MIC, performance
 computing for real-world application on those architectures still rely on vendor-specific solutions, especially before robust implementations of 
-those models are available for supporting all the three architectures. 
+those models are available for supporting all the three architecutures. 
 
 %have . 
 %Both MIC and CPU are however highly different from GPU. 
@@ -33,8 +33,8 @@ designing more efficient applications, choosing the appropriate accelerators for
 and developing more effective task scheduling and mapping strategies. In this paper, we investigate and compare the performance, 
 efficiency, power consumption, energy efficiency, temperature, productivity and cost of the three architectures using representative 
 benchmarks of Rodinia~\cite{R:1}. 
-Our work differs from other related works that concentrate on the comparison of performance and/or energy 
-consumption of two or three of architectures on specific applications~\cite{R:8, R:9, R:10, R:12, R:11} by providing a comprehensive analysis of those metrics. We thus
+Our work differs from other related work that concentrates on the comparison of performance and/or energy 
+consumption of two or three of architectures on specific applications~\cite{cite1, cite2, cite3, citemore} by providing a comprehensive analysis of those metrics. We thus
 providing more insightful guidance for users in selecting accelerators for applications.  
 % within different domains on CPU, GPU and MIC architectures. 
 This paper makes the following contributions: 
@@ -52,5 +52,4 @@ This paper makes the following contributions:
 \item  We propose a unified efficiency metric to compare the overall benefits of the three architectures.
 \end{itemize}
 
-The rest of the paper is organized as follows: Section II reviews the related work. %Section III describes the overview of architectures and programming models. 
-Section III provides short overview of benchmarks of Rodinia. Section IV presents comprehensive performance analysis of the benchmarks for CPU, GPU, and MIC. Section V concludes the paper.
+The rest of the paper is organized as follows: Section II reviews the related work. Section III describes the overview of architectures and programming models. Section IV provides short overview of benchmarks of Rodinia. Section V presents comprehensive performance analysis of the benchmarks for CPU, GPU, and MIC. Section VI concludes the paper.
