@@ -61,12 +61,8 @@ NVML (Nvidia Management Library) \cite{R:16} is a runtime library to measure pow
 \subsection{Performance and Performance Efficiency}
 %\vspace{-4mm} 
 Performance and efficiency are two most important factors to evaluate architectures of CPU, GPU and MIC. The performance are summarized as speedup in Figure \ref{fig:speedup}. It presents the average normalized execution time observed for LUD, CFD, NW, BFS and HotSpot. The speedups of GPU range from 2.3-103X as CPU implementations and the speedups of MIC range from 1.2-24X as CPU implementations excluding BFS.
-  
+
 With respect to GPU and MIC, data are copied to and from the accelerator/coprocessor under the explicit control from the programmer and runtime. Programmers mark code blocks with C/C++ pragmas for MIC and leverage runtime library for GPU. The compiler runtime transfers data from the host to the device, performs computation on the device and returns results back to the host. From Figure \ref{fig:speedup}, GPU outperforms MIC by 2 to 33 times. GPU is better than MIC at handling huge data because of its streaming multi-processor (SM) that can handle millions of threads.  
-
-The stream mechanism offered by CUDA allows the hiding of the communication overhead, in particular of the copies between CPU and GPU, provided that the computation executed concurrently with the communication is large enough. MIC is incapable of overcoming the extra processing capabilities even though MIC has superior memory transfer latency. The overheads of MIC, e.g., data offloading overheads of memory transfer and computation overheads between CPU and MIC, are much more than GPU in the benchmarks. In native mode of MIC, application directly executes on coprocessor without being offloaded to coprocessor. Such applications are required to be compiled and built on the host system using -mmic supporting flag which enables the compiler to generate an object file for Xeon Phi architecture. Executing applications in native mode requires all the dynamic libraries and executable must be present on coprocessor. MIC can take advantage of the native mode and would outperform GPU. But with respect to the benchmarks, the implementation for MIC is offload mode instead of native mode. Running on an MIC in offload mode is possible to emulate the CUDA streaming mechanism that supports independent execution flows, but performance in offload mode remains low compared to a GPU with the same number of computing unit for a problem of fixed size. 
-
-%\vspace{-1mm}
 
     \begin{figure}[h!]
   \centering
@@ -79,6 +75,10 @@ The stream mechanism offered by CUDA allows the hiding of the communication over
 \label{fig:speedup}
 \end{minipage}%
 \end{figure}
+
+The stream mechanism offered by CUDA allows the hiding of the communication overhead, in particular of the copies between CPU and GPU, provided that the computation executed concurrently with the communication is large enough. MIC is incapable of overcoming the extra processing capabilities even though MIC has superior memory transfer latency. The overheads of MIC, e.g., data offloading overheads of memory transfer and computation overheads between CPU and MIC, are much more than GPU in the benchmarks. In native mode of MIC, application directly executes on coprocessor without being offloaded to coprocessor. Such applications are required to be compiled and built on the host system using -mmic supporting flag which enables the compiler to generate an object file for Xeon Phi architecture. Executing applications in native mode requires all the dynamic libraries and executable must be present on coprocessor. MIC can take advantage of the native mode and would outperform GPU. But with respect to the benchmarks, the implementation for MIC is offload mode instead of native mode. Running on an MIC in offload mode is possible to emulate the CUDA streaming mechanism that supports independent execution flows, but performance in offload mode remains low compared to a GPU with the same number of computing unit for a problem of fixed size. 
+
+%\vspace{-1mm}
 
 %\vspace{-1mm}
   
@@ -94,42 +94,27 @@ The stream mechanism offered by CUDA allows the hiding of the communication over
 \begin{equation}\label{equ:new_speedup}
 	{S_{p}} = \frac{T_{b}}{T_{t}} \quad and \quad {E_{p}} = \frac{S_{p}}{F_{t}}
 \end{equation}
-  
-Performance efficiency represents the gap between practical performance and theoretical performance in heterogeneous architectures, which is a critical consideration to find out the factors to improve architecture designs. From Figure \ref{fig:performanceE}, we conclude that CPU has a better performance efficiency than GPU in LUD and better than MIC in LUD, BFS and HotSpot. Since the theoretical performance of GPU is 3.4X as CPU, but the practical speedup is only 2.3X as CPU, the performance efficiency of CPU is better than GPU in LUD. With respect to MIC, similarly even though MIC has 1.2X and 2.2X better practical performance than MIC in LUD and HotSpot respectively, MIC has 2.4X better theoretical performance than CPU. Therefore, the performance efficiency of CPU is better than MIC in LUD and HotSpot.
 
-%\vspace{-1mm}
-
-    \begin{figure}[h!]
+      \begin{figure}[h!]
   \centering
   \begin{minipage}{0.5\textwidth}
     \centering
    \centering
      \includegraphics[width=1\linewidth]{Performance_E.pdf}  
-
-\caption{Performance efficiency is based on practical performance and theoretical performance. The comparison among CPU, GPU and MIC uses CPU execution time as baseline for LUD, CFD, NW, BFS and HotSpot.}
+\caption{Performance efficiency is based on practical performance and theoretical performance. The comparison among CPU, GPU and MIC uses CPU execution time as baseline for five benchmarks}
 \label{fig:performanceE}
 \end{minipage}%
 \end{figure}
-
-%\vspace{-1mm}
-
-    
-New challenges need to be solved in order to analyze monetary cost corresponding to the performance of GPU, MIC and CPU especially in computing centers where makes an efficient or suitable decision balancing the performance and cost. Thus the monetary cost efficiency is important to consider. Let $S_{p}$ and $C$ represent speedup of performance and monetary cost, respectively. We utilize CPU as the baseline and normalize the performance efficiency so the formula of monetary cost efficiency $E_{c}$ is as follows:
-%\vspace{-1mm} 
-\begin{equation}\label{equ:monetaryE}
-	{E_{c}} = \frac{S_{p}}{C}
-\end{equation}
   
+Performance efficiency represents the gap between practical performance and theoretical performance in heterogeneous architectures, which is a critical consideration to find out the factors to improve architecture designs. From Figure \ref{fig:performanceE}, we conclude that CPU has a better performance efficiency than GPU in LUD and better than MIC in LUD, BFS and HotSpot. Since the theoretical performance of GPU is 3.4X as CPU, but the practical speedup is only 2.3X as CPU, the performance efficiency of CPU is better than GPU in LUD. With respect to MIC, similarly even though MIC has 1.2X and 2.2X better practical performance than MIC in LUD and HotSpot respectively, MIC has 2.4X better theoretical performance than CPU. Therefore, the performance efficiency of CPU is better than MIC in LUD and HotSpot.
 
-%  \vspace{-2mm} 
+
+
   
 \subsection{Power Consumption and Energy Efficiency}
 %\vspace{-4mm} 
 
 There are growing numbers of commercial high performance computing solutions using various accelerators. Therefore, power consumption has increasingly become a concern. In addition, a better understanding of the power tradeoffs of heterogeneous architectures is needed to guide usage in server clusters and data centers. 
-
- Idle power is the power consumed by the devices when the device is in a long idle state, i.e., when the devices are doing nothing for a long period of time. As Figure \ref{fig:power} illustrates, at the idle state the power consumption of CPU is much lower than GPU and MIC and is evaluated 28\% and 19\% for GPU and MIC respectively. With respect to the benchmarks, MIC consumes more power than GPU except HotSpot and CPU except NW. The power consumption of MIC is 1.01-2.37X as GPU and 1.20-1.68X as CPU. GPU consumes more power than MIC and CPU in HotSpot while CPU consumes more power than MIC and GPU in NW. One reason is that certain factors of power consumption of MIC such as the execution of the graphics pipeline, bus communication and memory access consume more power than the corresponding parts of GPU. For certain benchmarks, GPU and MIC are more effective than CPU for the computations that use a small size of input data in communication between the host and devices and perform well in compute-intensive operations which reduce the workload of communication and computation to decrease power consumption. For some workload, memory-bound causes a decrease in power consumption, as the duration of execution is reducing, consuming less cumulative power. In other words, intensive workload of MIC and GPU should generally use the high core clock so that it completes operation as soon as possible to minimize energy. 
- %The reason might be that NW and HotSpot take more memory accesses than LUD, CFD and BFS, and that MIC uses less energy for memory accesses.
 
     \begin{figure}[h!]
   \centering
@@ -139,6 +124,21 @@ There are growing numbers of commercial high performance computing solutions usi
      \includegraphics[width=1\linewidth]{Power.pdf}    
 \caption{Power consumption comparison among CPU, GPU and MIC for idle state, LUD, CFD, NW, BFS and HotSpot.}
 \label{fig:power}
+\end{minipage}%
+\end{figure}
+
+ Idle power is the power consumed by the devices when the device is in a long idle state, i.e., when the devices are doing nothing for a long period of time. As Figure \ref{fig:power} illustrates, at the idle state the power consumption of CPU is much lower than GPU and MIC and is evaluated 28\% and 19\% for GPU and MIC respectively. With respect to the benchmarks, MIC consumes more power than GPU except HotSpot and CPU except NW. The power consumption of MIC is 1.01-2.37X as GPU and 1.20-1.68X as CPU. GPU consumes more power than MIC and CPU in HotSpot while CPU consumes more power than MIC and GPU in NW. One reason is that certain factors of power consumption of MIC such as the execution of the graphics pipeline, bus communication and memory access consume more power than the corresponding parts of GPU. For certain benchmarks, GPU and MIC are more effective than CPU for the computations that use a small size of input data in communication between the host and devices and perform well in compute-intensive operations which reduce the workload of communication and computation to decrease power consumption. For some workload, memory-bound causes a decrease in power consumption, as the duration of execution is reducing, consuming less cumulative power. In other words, intensive workload of MIC and GPU should generally use the high core clock so that it completes operation as soon as possible to minimize energy. 
+ %The reason might be that NW and HotSpot take more memory accesses than LUD, CFD and BFS, and that MIC uses less energy for memory accesses.
+
+
+    \begin{figure}[h!]
+  \centering
+  \begin{minipage}{0.5\textwidth}
+    \centering
+   \centering
+     \includegraphics[width=1\linewidth]{Energy_E.pdf}    
+\caption{Energy efficiency is the efficiency of the practical FLOPS to power consumption on devices of heterogeneous architectures for each benchmark using CPU as baseline. GPU performs better than CPU and MIC for five benchmarks.} 
+\label{fig:energyE}
 \end{minipage}%
 \end{figure}
 
@@ -153,24 +153,12 @@ With regard to scientific computing programs, FLOPS per watt has gained populari
 According to our measurement in Figure \ref{fig:energyE}, GPU outperforms MIC and CPU in all benchmarks while MIC outperforms CPU in CFD, NW and HotSpot. Because FLOPS of GPU in the benchmarks is higher than MIC and CPU, even though the power consumption of GPU is more than MIC and CPU in HotSpot, GPU still has better energy efficiency. With respect to LUD between MIC and CPU, because the power consumption of MIC in LUD is 1.4X as CPU and MIC performs 1.2X better FLOPS performance than CPU, CPU outperforms MIC.
 
 %  \vspace{-2mm} 
-    \begin{figure}[h!]
-  \centering
-  \begin{minipage}{0.5\textwidth}
-    \centering
-   \centering
-     \includegraphics[width=1\linewidth]{Energy_E.pdf}    
-\caption{Energy efficiency is the efficiency of the practical FLOPS to power consumption on devices of heterogeneous architectures for each benchmark using CPU as baseline. GPU performs better than CPU and MIC for five benchmarks on energy efficiency.} 
-\label{fig:energyE}
-\end{minipage}%
-\end{figure}
 
 %  \vspace{-2mm} 
 \subsection{Temperature}
 %\vspace{-4mm} 
 
 Temperature of running kernels on heterogeneous architecture devices is also a critical consideration for high performance computing in server clusters and data centers because we need to pay for cooling down systems and to utilize them efficiently. 
-
-By comparing results in Figure \ref{fig:temperature}, MIC stays in higher temperature than GPU and CPU, and GPU stays in higher temperature than CPU. In addition, we observe that for MIC and GPU even though the temperature of GPU is only 80\% of MIC in HotSpot, power consumption of GPU is 1.4X as MIC, which means that for some benchmarks even though GPU consumes more power for calculation than MIC, MIC stays in higher temperature than GPU. With regard to other benchmarks, the power consumption of MIC is 1.01-2.37X as GPU which the temperature is 1.04-1.25X as GPU. From Figure \ref{fig:temperature}, CPU performs lower than MIC and GPU especially in idle state. The temperature of CPU is 63-83\% of MIC for benchmarks and 59\% in idle state while CPU is 77-100\% of GPU excluding HotSpot and 63\% in idle state. Because the design for CPU is for general purpose and task scheduling in the whole system, the temperature of CPU must stay low in idle for some applications using less intensive computing. But the purpose of MIC and GPU is for high throughput and intensive computing, which in architecture design is one of the reasons why temperature of MIC and GPU is higher than CPU.
 
     \begin{figure}[h!]
   \centering
@@ -183,8 +171,17 @@ By comparing results in Figure \ref{fig:temperature}, MIC stays in higher temper
 \end{minipage}%
 \end{figure}
 
+By comparing results in Figure \ref{fig:temperature}, MIC stays in higher temperature than GPU and CPU, and GPU stays in higher temperature than CPU. In addition, we observe that for MIC and GPU even though the temperature of GPU is only 80\% of MIC in HotSpot, power consumption of GPU is 1.4X as MIC, which means that for some benchmarks even though GPU consumes more power for calculation than MIC, MIC stays in higher temperature than GPU. With regard to other benchmarks, the power consumption of MIC is 1.01-2.37X as GPU which the temperature is 1.04-1.25X as GPU. From Figure \ref{fig:temperature}, CPU performs lower than MIC and GPU especially in idle state. The temperature of CPU is 63-83\% of MIC for benchmarks and 59\% in idle state while CPU is 77-100\% of GPU excluding HotSpot and 63\% in idle state. Because the design for CPU is for general purpose and task scheduling in the whole system, the temperature of CPU must stay low in idle for some applications using less intensive computing. But the purpose of MIC and GPU is for high throughput and intensive computing, which in architecture design is one of the reasons why temperature of MIC and GPU is higher than CPU.
+
+
+
 \subsection{Monetary Cost Efficiency} 
 %\vspace{-4mm} 
+New challenges need to be solved in order to analyze monetary cost corresponding to the performance of GPU, MIC and CPU especially in computing centers where makes an efficient or suitable decision balancing the performance and cost. Thus the monetary cost efficiency is important to consider. Let $S_{p}$ and $C$ represent speedup of performance and monetary cost, respectively. We utilize CPU as the baseline and normalize the performance efficiency so the formula of monetary cost efficiency $E_{c}$ is as follows:
+\begin{equation}\label{equ:monetaryE}
+  {E_{c}} = \frac{S_{p}}{C}
+\end{equation}
+
 Monetary cost efficiency represents the efficiency of the performance speedup to monetary cost paid for heterogeneous architectures on specific mainstream CPU, GPU and MIC, which also refers to the performance speedup of heterogeneous architectures per dollar. The monetary cost is presented in Table \ref{tab:specification}. From Figure \ref{fig:monetaryE}, the monetary cost efficiency of GPU performs well than CPU and MIC for the benchmarks because the monetary cost of CPU is 3.9X as GPU and the monetary cost of MIC is 1.5X as GPU. With regard to CPU and MIC, the monetary cost efficiency of MIC is better than CPU for the benchmarks excluding BFS because the speedup performance of CPU is 3.3X as MIC but the monetary cost of CPU is only 2.6X as MIC. Since the speedup performance of MIC in BFS is only 30\% of CPU, the monetary cost efficiency of CPU is still better than MIC in BFS.
 
     \begin{figure}[h!]
@@ -193,7 +190,7 @@ Monetary cost efficiency represents the efficiency of the performance speedup to
     \centering
    \centering
      \includegraphics[width=1\linewidth]{Monetary_E.pdf}    
-\caption{Monetary cost efficiency is the efficiency of the performance speedup using CPU as baseline to monetary cost paid for devices of heterogeneous architectures. GPU performs better than CPU and MIC for five benchmarks on monetary cost efficiency.}
+\caption{Monetary cost efficiency is the efficiency of the performance speedup using CPU as baseline to monetary cost paid for devices of heterogeneous architectures. GPU performs better than CPU and MIC for five benchmarks.}
 \label{fig:monetaryE}
 \end{minipage}%
 \end{figure}
@@ -212,7 +209,7 @@ As we know, the productivity of programming is difficult to measure under a stan
     \centering
    \centering
      \includegraphics[width=1\linewidth]{SLOC.pdf}    
-  \caption{SLOC comparison among CPU, GPU and MIC for LUD, CFD, NW, BFS and HotSpot.}
+  \caption{Source Lines Of Code (SLOC) comparison among CPU, GPU and MIC for five benchmarks.}
   \label{fig:sloc}
 \end{minipage}%
 \end{figure}
