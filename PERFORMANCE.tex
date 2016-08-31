@@ -1,6 +1,6 @@
 %  \vspace{-1mm} 
 
-This section evaluates and analyzes the performance of benchmarks for CPU, GPU, and MIC. We present the performance, efficiency, power consumption, energy efficiency, temperature, monetary cost efficiency, productivity and unified efficiency metric using Nvidia K80 GPU, Intel Xeon Phi SC7120P MIC and dual Intel Xeon E5-2699 v3 CPU to evaluate performance. 
+This section evaluates and analyzes the performance of benchmarks for heterogeneous architectures that consist of multi-core CPU, GPU and Intel Xeon Phi architectures. We present the performance, efficiency, power consumption, energy efficiency, temperature, monetary cost efficiency, productivity and unified efficiency metric using Nvidia K80 GPU, Intel Xeon Phi SC7120P MIC and dual Intel Xeon E5-2699 v3 CPU to evaluate performance. 
 
 
 \subsection{Experimental Setup}
@@ -47,7 +47,7 @@ With regard to Intel MIC, it is measured in the same system and Intel icc compil
 \subsection{Measurement}
 %\vspace{-4mm} 
 
-While CPU and MIC executables are generated from the same C source code annotated with OpenMP, GPU programs are implemented using CUDA. MIC supports two execution modes: native and offload. In the native mode the application runs entirely within the co-processor. The offload mode allows for CPU to execute regions of the application code with the co-processor. These regions are defined using pragma tags and include directives for transferring data. The offload mode also supports conditional offload directives, which may be used to decide at runtime whether a region should be offloaded to the co-processor or should be executed on CPU. Since we execute the codes on MIC using the offload mode, a computing core is reserved to run the offload daemon, and a maximum of 240 computing cores are launched.
+While CPU and MIC executables are generated from the similar C source code annotated with OpenMP, GPU programs are implemented using CUDA. MIC supports two execution modes: native and offload. In the native mode the application runs entirely within the co-processor. The offload mode allows for CPU to execute regions of the application code with the co-processor. These regions are defined using pragma tags and include directives for transferring data. The offload mode also supports conditional offload directives, which may be used to decide at runtime whether a region should be offloaded to the co-processor or should be executed on CPU. Since we execute the codes on MIC using the offload mode, a computing core is reserved to run the offload daemon, and a maximum of 240 computing cores are launched.
 
 Execution time can be utilized as performance. However, since CPU, GPU and MIC are implemented in different architectures and they are designed in diverse hardware cores that have different definition and standard, it's hard to compare performance efficiency between different architectures. One way to compare their performance is the peak floating-point operations per second (FLOPS). In order to get fair results, we choose problem size of benchmarks that are large enough to eliminate the influence of instant change of performance, power consumption, temperature and data transfer in and out of GPU/MIC. Problem sizes of all applications are fixed at 12000 for LUD, 193000 for CFD, 32000 for NW, 64M for BFS and 1024 with 20000 loops for Hotspot. Threads available are assigned in maximum for CPU, GPU and MIC. The execution time shown is an average over ten runs.
 
@@ -60,7 +60,7 @@ NVML (Nvidia Management Library) \cite{R:16} is a runtime library to measure pow
 
 \subsection{Performance and Performance Efficiency}
 %\vspace{-4mm} 
-Performance and efficiency are two most important factors to evaluate architectures of CPU, GPU and MIC. The performance are summarized as speedup in Figure \ref{fig:speedup}. It presents the average normalized execution time observed for LUD, CFD, NW, BFS and HotSpot. The speedups of GPU range from 2.3-103X as CPU implementations and the speedups of MIC range from 1.2-24X as CPU implementations excluding BFS.
+Performance and performance efficiency are two most important factors to evaluate architectures of CPU, GPU and MIC. The performance are summarized as speedup in Figure \ref{fig:speedup}. It presents the average normalized execution time observed for LUD, CFD, NW, BFS and HotSpot. The speedups of GPU range from 2.3-103X as CPU implementations and the speedups of MIC range from 1.2-24X as CPU implementations excluding BFS.
 
 With respect to GPU and MIC, data are copied to and from the accelerator/coprocessor under the explicit control from the programmer and runtime. Programmers mark code blocks with C/C++ pragmas for MIC and leverage runtime library for GPU. The compiler runtime transfers data from the host to the device, performs computation on the device and returns results back to the host. From Figure \ref{fig:speedup}, GPU outperforms MIC by 2 to 33 times. GPU is better than MIC at handling huge data because of its streaming multi-processor (SM) that can handle millions of threads.  
 
@@ -177,7 +177,7 @@ By comparing results in Figure \ref{fig:temperature}, MIC stays in higher temper
 
 \subsection{Monetary Cost Efficiency} 
 %\vspace{-4mm} 
-New challenges need to be solved in order to analyze monetary cost corresponding to the performance of GPU, MIC and CPU especially in computing centers where makes an efficient or suitable decision balancing the performance and cost. Thus the monetary cost efficiency is important to consider. Let $S_{p}$ and $C$ represent speedup of performance and monetary cost, respectively. We utilize CPU as the baseline and normalize the performance efficiency so the formula of monetary cost efficiency $E_{c}$ is as follows:
+New challenges need to be solved in order to analyze monetary cost corresponding to the performance of GPU, MIC and CPU especially in computing centers where should make an efficient or suitable decision balancing the performance and cost. Thus the monetary cost efficiency is important to consider. Let $S_{p}$ and $C$ represent speedup of performance and monetary cost, respectively. We utilize CPU as the baseline and normalize the performance efficiency so the formula of monetary cost efficiency $E_{c}$ is as follows:
 \begin{equation}\label{equ:monetaryE}
   {E_{c}} = \frac{S_{p}}{C}
 \end{equation}
