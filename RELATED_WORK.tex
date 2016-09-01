@@ -3,11 +3,17 @@
 %performance efficiency gap between two GPUs and MICs is small in the report.
 
 %For the cluster systems, 
-Massimo Bernaschi et al. \cite{R:10} presented and compared the performances of GPU and MIC both in a single system and in cluster configuration for the simulation of two physical systems showing that the performances of an MIC change dramatically depending on the need to pad arrays to avoid dramatic performance drops due to L2 TLB trashing effects. In \cite{R:11}, authors perform a rigorous performance analysis and find that after applying optimizations appropriate for both CPUs and GPUs, the performance gap between an Nvidia GTX280 processor and the Intel Core i7 960 processor narrows to only 2.5x on average. They also discuss optimization techniques for both CPU and GPU, analyze what architecture features contributed to performance differences between the two architectures, and recommend a set of architectural features which provide significant improvement in architectural efficiency for throughput kernels. Performance and evaluation comparison of Multi Text Keyword Search algorithms into MIC and GPU has also been proposed and evaluated by performance analysis \cite{R:12}. Authors used Nvidia K20c and Nvidia K40 for their GPUs and Intel Xeon Phi 5100 for MIC, and found out that K20c and K40 outperformed MIC for this particular algorithm. 
-You et al. in \cite{R:8} report that the comparision of GPUs and MICs for accelerating 3D Elastic Wave Forward
+Massimo Bernaschi et al. \cite{R:10} presented and compared the performances of GPU and MIC both in a single system and in cluster configuration for the simulation of two physical systems showing that the performances of an MIC change dramatically depending on the need to pad arrays to avoid dramatic performance drops due to L2 TLB trashing effects.  
+A. Abdullah et al. \cite{R:12} present performance and evaluation comparison of Multi Text Keyword Search algorithms into MIC and GPU has also been proposed and evaluated by performance analysis. Authors used Nvidia K20c and Nvidia K40 for their GPUs and Intel Xeon Phi 5100 for MIC, and found out that K20c and K40 outperformed MIC for this particular algorithm. 
+You et al. in \cite{R:8} report that the comparison of GPUs and MICs for accelerating 3D Elastic Wave Forward
 Modeling application. 
-George Teodoro et al. in~\cite{R:9} provide analysis of microscopy image analysis applications on GPU, MIC and CPU architectures. 
+George Teodoro et al. in \cite{R:9} provide analysis of microscopy image analysis applications on GPU, MIC and CPU architectures. 
 They systematically implement and evaluated the performance using approaches that exhibit different data access patterns (regular and irregular), computation intensity, and types of parallelism. % from a class of applications. 
+
+
+
+Halyo et al. \cite{halyo2014first} optimized a real-time algorithm on four different architectures Tesla GPU, Xeon and i7 CPUs, and Xeon Phi coprocessor. The outcome provides a benchmark that may be used to identify the optimal computing system configuration for the required throughput, cost and other compliance factors.
+In paper \cite{lee2010debunking}, authors analyzed the performance of Intel CPUs and Nvidia GPUs. They show that CPUs and GPUs are much closer in performance (2.5X) than the previously reported orders of magnitude difference. Many factors contributed to the reported large gap in performance, such as which CPU and GPU are used and what optimizations are applied to the code. Optimizations for CPU that contributed to performance improvements are multithreading, cache blocking, and reorganization of memory accesses for SIMD. Optimizations for GPU that contributed to performance improvements are: minimizing global synchronization and using local shared buffers are the two key techniques to improve performance.  
 
 
 
@@ -15,10 +21,10 @@ They systematically implement and evaluated the performance using approaches tha
 Researchers generally compare heterogeneous architectures by the performance of 
 applications while other metrics such as energy efficiency, 
 monetary cost, temperature, and productivity are secondary factors. %metrics. 
-Performance analysis are mostly based on the specific applications instead of covering spectrum of scientific domains using benchmarks
+Performance analysis is mostly based on the specific applications instead of covering spectrum of scientific domains using benchmarks
 that could provide a comprehensive understanding of the behaviors of these architectures. 
 The work reported in this paper aims to provide such comprehensive and unified analysis. 
 %and a unified efficiency metric to evaluate heterogeneous architectures.  
 
-%can be a standard comparison to fairly evaluate the heterogeneous architectures. In addition, researchers compare GPU with CPU while MIC has played an important role in high performance computing, or compare GPU with MIC while CPU has strength for some applications. Thus the importance of comprehensive comparison between GPU, MIC and CPU is obvious. Analytical models of CPUs \cite{R:13} and GPUs \cite{R:14} have also been proposed. They provide a structural understanding of throughput computing performance, which only focus on a homogeneous architecture for CPU or GPU instead of heterogeneous architectures. 
+%can be a standard comparison to fairly evaluate the heterogeneous architectures. In addition, researchers compare GPU with CPU while MIC has played an important role in high-performance computing, or compare GPU with MIC while CPU has strength for some applications. Thus the importance of comprehensive comparison between GPU, MIC and CPU is obvious. Analytical models of CPUs \cite{R:13} and GPUs \cite{R:14} have also been proposed. They provide a structural understanding of throughput computing performance, which only focus on a homogeneous architecture for CPU or GPU instead of heterogeneous architectures. 
 
