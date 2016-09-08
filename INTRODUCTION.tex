@@ -5,7 +5,7 @@ A general purpose GPU includes 100x to 1000x simpler cores (compared against gen
 and realizes single instruction multiple thread execution model 
 that excels in processing data parallel workloads in which inter-core
 communication are minimum. 
-MIC employs a hybrid architecture combining classic x86 based many-core architecture (\verb#~#70 cores) 
+MIC employs a hybrid many-core architecture combining classic x86 based cores (\verb#~#70 cores) 
 and enhanced vector processing units, thus able to deliver performance improvement for applications with either task parallelism or data parallel, or
 the mix of both than conventional CPUs. The power envolopes of these accelerators and CPUs are also different in both idle and loaded states. 
 
@@ -26,8 +26,8 @@ those models are available for supporting all the three architectures.
    
 
 
-The hardware architecture heterogeneity and software variants of programming models pose a difficult problem for users to 
-choose suitable accelerators or coprocessors for specific applications considering both performance and usability of each architecture. 
+The hardware heterogeneity and software variants of programming models pose a difficult problem for users to 
+choose suitable accelerators for their applications considering both performance and usability of each architecture. 
 Comprehensively understanding the characteristics of heterogeneous architectures in various aspects can help us in 
 designing more efficient applications, choosing the appropriate accelerators for an application, 
 and developing more effective task scheduling and mapping strategies. In this paper, we investigate and compare the performance, 

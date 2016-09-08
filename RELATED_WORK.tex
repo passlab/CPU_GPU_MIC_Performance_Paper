@@ -3,8 +3,13 @@
 %performance efficiency gap between two GPUs and MICs is small in the report.
 
 %For the cluster systems, 
-Massimo Bernaschi et al. \cite{R:10} presented and compared the performances of GPU and MIC both in a single system and in cluster configuration for the simulation of two physical systems showing that the performances of an MIC change dramatically depending on the need to pad arrays to avoid dramatic performance drops due to L2 TLB trashing effects.  
-A. Abdullah et al. \cite{R:12} present performance and evaluation comparison of Multi Text Keyword Search algorithms into MIC and GPU has also been proposed and evaluated by performance analysis. Authors used Nvidia K20c and Nvidia K40 for their GPUs and Intel Xeon Phi 5100 for MIC, and found out that K20c and K40 outperformed MIC for this particular algorithm. 
+Massimo Bernaschi et al. \cite{R:10} compared the performances of 
+GPU and MIC in a single system and in cluster configuration for the spin system simulation 
+showing that the performances of an MIC change dramatically depending on way of array padding that impacts dramatically the performance
+ due to L2 TLB trashing effects.  
+A. Abdullah et al. \cite{R:12} present performance and comparison of Multi Text Keyword Search algorithms on MIC and GPU. 
+%has also been proposed and evaluated by performance analysis. 
+Authors used Nvidia K20c and Nvidia K40 for their GPUs and Intel Xeon Phi 5100 for MIC, and found out that K20c and K40 outperformed MIC for this particular algorithm. 
 You et al. in \cite{R:8} report that the comparison of GPUs and MICs for accelerating 3D Elastic Wave Forward
 Modeling application. 
 George Teodoro et al. in \cite{R:9} provide analysis of microscopy image analysis applications on GPU, MIC and CPU architectures. 

@@ -1,13 +1,17 @@
 %  \vspace{-1mm} 
 
-This section evaluates and analyzes the performance of benchmarks for heterogeneous architectures that consist of multi-core CPU, GPU and Intel Xeon Phi architectures. We present the performance, efficiency, power consumption, energy efficiency, temperature, monetary cost efficiency, productivity and unified efficiency metric using Nvidia K80 GPU, Intel Xeon Phi SC7120P MIC and dual Intel Xeon E5-2699 v3 CPU to evaluate performance. 
+In this section, we report the performance evaluation of the chosen benchmarks for heterogeneous architectures that consist of multi-core CPU, GPU and Intel Xeon Phi architectures. We present the performance, efficiency, power consumption, energy efficiency, temperature, monetary cost efficiency, productivity and unified efficiency metric using Nvidia K80 GPU, Intel Xeon Phi SC7120P MIC and dual Intel Xeon E5-2699 v3 CPU. 
 
 
 \subsection{Experimental Setup}
 %\bigbreak
 %\vspace{-4mm} 
 %\noindent\textbf{Intel Xeon CPU:} 
-In our work, experiments of CPU are measured with 256 GB of 2133 MHz DDR4 ECC memory, based on two-socket Intel Xeon E5-2699v3 CPUs for the server. The thermal design power (TDP) of each CPU socket is 145 W. The sockets are interconnected by a Quick Path Interconnect (QPI) link and forming a shared-memory NUMA system. Each socket has 18 physical cores (36 cores in the system) clocked at 2.3 GHz (turbo frequency of 3.6 GHz) with two-way hyper-threading. The vector units of the system support the AVX instruction set with 256-bit vector registers. The host operating system is CentOS 6.7 Linux with kernel version 2.6.32-573.12.1.el6.x86\_64. The code was compiled with the Intel icc compiler version 13.1.3.
+In our work, CPU experiments are performed in a server with  two-socket Intel 
+Xeon E5-2699v3 CPUs and 256 GB of 2133MHz DDR4 ECC memory. 
+The thermal design power (TDP) of each CPU socket is 145W. 
+The sockets are interconnected by a Quick Path Interconnect (QPI) link and forming a shared-memory NUMA system. 
+Each socket has 18 physical cores (36 cores in the system) clocked at 2.3 GHz (turbo frequency of 3.6 GHz) with two-way hyper-threading. The vector units of the system support the AVX instruction set with 256-bit vector registers. The host operating system is CentOS 6.7 Linux with kernel version 2.6.32-573.12.1.el6.x86\_64. The code was compiled with the Intel icc compiler version 13.1.3.
 
 %\vspace{-4mm}
 
