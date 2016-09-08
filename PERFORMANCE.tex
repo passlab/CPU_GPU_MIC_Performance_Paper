@@ -255,8 +255,8 @@ Let $E_{p}$ represent performance efficiency that is the ratio of speedup (based
 %\vspace{-1mm} 
   \begin{equation}\label{equ:metric1}
     \begin{split}
-  {E_{u}} &  = E_{p}*W_{p}+E_{e}*W_{e}+E_{c}*W_{c} \\
-   & = \frac{S_{p}*W_{p}}{F_{t}}+\frac{F_{p}*W_{e}}{P}+\frac{S_{p}*W_{c}}{C}
+  {E_{u}} &  = E_{p}W_{p}+E_{e}W_{e}+E_{c}W_{c} \\
+   & = \frac{S_{p}W_{p}}{F_{t}}+\frac{F_{p}W_{e}}{P}+\frac{S_{p}W_{c}}{C}
   \end{split}
 \end{equation}
   
@@ -264,8 +264,8 @@ Let $T_{b}$ denote base execution time, $T_{t}$ denote target execution time and
 %  \vspace{-1mm} 
   \begin{equation}\label{equ:metric1}
     \begin{split}
-  {E_{u}} &  = \frac{S_{p}*W_{p}}{F_{t}}+\frac{F_{n}*W_{e}}{P*T_{t}}+\frac{S_{p}*W_{c}}{C} \\
-   & = {S_{p}}(\frac{W_{p}}{F_{t}}+\frac{F_{n}*W_{e}}{P*T_{b}}+\frac{W_{c}}{C})
+  {E_{u}} &  = \frac{S_{p}W_{p}}{F_{t}}+\frac{F_{n}W_{e}}{PT_{t}}+\frac{S_{p}W_{c}}{C} \\
+   & = {S_{p}}(\frac{W_{p}}{F_{t}}+\frac{F_{n}W_{e}}{PT_{b}}+\frac{W_{c}}{C})
   \end{split}
 \end{equation}
 
