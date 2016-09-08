@@ -42,16 +42,22 @@ Each socket has 18 physical cores (36 cores in the system) clocked at 2.3 GHz (t
 
 %\vspace{-1mm}
 
- GPU is measured in the same system as CPU. The GPU model used for the results presented in this paper is the Nvidia Tesla K80 (active-cooled model for workstations), which has two Tesla GK210 GPUs. Characteristics for both GPUs are 2496 cores clocked at 560 MHz, 24 GB of on-board memory with a clock of 2.5 GHz, and a 384-bit memory interface. The code was written in CUDA and C compiled with the nvcc compiler, version 7.5. 
+The GPU used for the results is the Nvidia Tesla K80 (active-cooled model for workstations), which has two Tesla GK210 GPUs. The GPU 
+is installed in the same system as the CPU. 
+Characteristics for both GPUs are 2496 cores clocked at 560 MHz, 24 GB of on-board memory with a clock of 2.5 GHz, and a 384-bit memory interface. The code was written in CUDA and C compiled with the nvcc compiler, version 7.5. 
 
 
 %\noindent\textbf{Intel Xeon Phi Coprocessor:} 
-With regard to Intel MIC, it is measured in the same system and Intel icc compiler as CPU. The system contains one MIC coprocessor, Xeon Phi QS-7120P (passive-cooled model for servers) with 61 cores at 1.24 GHz, C0 coprocessor stepping, and 16 GB of GDDR5 RAM at 2.75 GHz. The driver stack is MPSS, version 2.1.6720-13. 
+With regard to Intel MIC, it is measured in the same system and uses the same Intel icc compiler as CPU. 
+The system contains one MIC coprocessor, Xeon Phi QS-7120P (passive-cooled model for servers) with 61 cores at 1.24 GHz, C0 coprocessor stepping, and 16 GB of GDDR5 RAM at 2.75 GHz. The driver stack is MPSS, version 2.1.6720-13. 
 
 \subsection{Measurement}
 %\vspace{-4mm} 
 
-While CPU and MIC executables are generated from the similar C source code annotated with OpenMP, GPU programs are implemented using CUDA. MIC supports two execution modes: native and offload. In the native mode the application runs entirely within the co-processor. The offload mode allows for CPU to execute regions of the application code with the co-processor. These regions are defined using pragma tags and include directives for transferring data. The offload mode also supports conditional offload directives, which may be used to decide at runtime whether a region should be offloaded to the co-processor or should be executed on CPU. Since we execute the codes on MIC using the offload mode, a computing core is reserved to run the offload daemon, and a maximum of 240 computing cores are launched.
+CPU and MIC versions of each of the benchmarks are similar C programs annotated with OpenMP. 
+GPU versions are implemented using CUDA. MIC supports two execution modes: native and offload. 
+In the native mode the application runs entirely within the co-processor. The offload mode allows for CPU to execute regions of the application code with the co-processor. These regions are defined using offloading pragma and include directives for transferring data. The offload mode also supports conditional offload directives, which may be used to decide at runtime whether a region should be offloaded to the co-processor or should be executed on CPU. We execute the codes on MIC using the offload mode, a system thread 
+is reserved to run the offload daemon, and a maximum of 240 threads are launched for the applications.
 
 Execution time can be utilized as performance. However, since CPU, GPU and MIC are implemented in different architectures and they are designed in diverse hardware cores that have different definition and standard, it's hard to compare performance efficiency between different architectures. One way to compare their performance is the peak floating-point operations per second (FLOPS). In order to get fair results, we choose problem size of benchmarks that are large enough to eliminate the influence of instant changes of performance, power consumption, temperature and data transfer in and out of GPU/MIC. Problem sizes of all applications are fixed at 12000 for LUD, 193000 for CFD, 32000 for NW, 64M for BFS and 1024 with 20000 loops for Hotspot. Threads available are assigned in maximum for CPU, GPU and MIC. The execution time shown is an average over ten runs.
 
