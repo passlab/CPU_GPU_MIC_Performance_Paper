@@ -236,19 +236,21 @@ To gain further insights into the performance of each benchmark for different ar
     \centering
    \centering
      \includegraphics[width=1\linewidth]{Metric.pdf}    
-  \caption{Unified efficiency metric leverages performance efficiency, energy efficiency and monetary efficiency comparing strengths and weaknesses of CPU, GPU and MIC.}
+  \caption{Unified efficiency metric leverages performance efficiency, energy efficiency and monetary efficiency comparing strengths and weaknesses of CPU, GPU and MIC. This result calculates the unified efficiency metric with the same value of weight for performance efficiency, energy efficiency and monetary cost efficiency.}
   \label{fig:metric}
 \end{minipage}%
 \end{figure}
 
 %\vspace{-1mm}
 
-Let $E_{p}$ represent performance efficiency that is the ratio of speedup (based on CPU) to the theoretical peak performance of the target, $E_{e}$ be the energy efficiency that is the ratio of practical FLOPS to average power consumption of the specific application for different target devices, and $E_{c}$ represent monetary cost efficiency that is the ratio of speedup to monetary cost. Let $S_{p}$ represent speedup; $F_{t}$ represents theoretical peak FLOPS; $F_{p}$ represents practical FLOPS; $P$ represents power consumption; and $C$ represents monetary cost. The unified efficiency metric $E_{u}$ formula is as follows:
+With respect of the requirement of users who focus on diverse factors for three architectures, we leverage three weights as coefficient respectively for performance efficiency, energy efficiency and monetary cost efficiency of the unified efficiency metric. Users can adjust the weight between three efficiencies according to the purpose of different aspects.
+
+Let $E_{p}$ represent performance efficiency that is the ratio of speedup (based on CPU) to the theoretical peak performance of the target, $E_{e}$ be the energy efficiency that is the ratio of practical FLOPS to average power consumption of the specific application for different target devices, and $E_{c}$ represent monetary cost efficiency that is the ratio of speedup to monetary cost. $W_{p}$, $W_{e}$ and $W_{c}$ represent the weight of performance efficiency, energy efficiency and monetary cost efficiency respectively. Let $S_{p}$ represent speedup; $F_{t}$ represents theoretical peak FLOPS; $F_{p}$ represents practical FLOPS; $P$ represents power consumption; and $C$ represents monetary cost. The unified efficiency metric $E_{u}$ formula is as follows:
 %\vspace{-1mm} 
   \begin{equation}\label{equ:metric1}
     \begin{split}
-  {E_{u}} &  = E_{p}+E_{e}+E_{c} \\
-   & = \frac{S_{p}}{F_{t}}+\frac{F_{p}}{P}+\frac{S_{p}}{C}
+  {E_{u}} &  = E_{p}*W_{p}+E_{e}*W_{e}+E_{c}*W_{c} \\
+   & = \frac{S_{p}*W_{p}}{F_{t}}+\frac{F_{p}*W_{e}}{P}+\frac{S_{p}*W_{c}}{C}
   \end{split}
 \end{equation}
   
@@ -256,10 +258,10 @@ Let $T_{b}$ denote base execution time, $T_{t}$ denote target execution time and
 %  \vspace{-1mm} 
   \begin{equation}\label{equ:metric1}
     \begin{split}
-  {E_{u}} &  = \frac{S_{p}}{F_{t}}+\frac{F_{n}}{P*T_{t}}+\frac{S_{p}}{C} \\
-   & = {S_{p}}(\frac{1}{F_{t}}+\frac{F_{n}}{P*T_{b}}+\frac{1}{C})
+  {E_{u}} &  = \frac{S_{p}*W_{p}}{F_{t}}+\frac{F_{n}*W_{e}}{P*T_{t}}+\frac{S_{p}W_{c}}{C} \\
+   & = {S_{p}}(\frac{W_{p}}{F_{t}}+\frac{F_{n}*W_{e}}{P*T_{b}}+\frac{W_{c}}{C})
   \end{split}
 \end{equation}
 
   
- From Figure \ref{fig:metric}, GPU is better than MIC and much better than CPU for the benchmarks. This illustrates that when combining performance efficiency, energy efficiency and monetary cost efficiency, GPU performs better compared to CPU and MIC for the benchmarks. Since MIC outperforms CPU for the benchmarks excluding BFS, for some intensive computing applications designed for HPC in heterogeneous computing infrastructures such as BFS, CPU still outperforms MIC when we consider overall benefits.
+ To compare the results of three architectues, we calculate the unified efficiency metric with the same value of weight for performance efficiency, energy efficiency and monetary cost efficiency and normalize the results based on CPU. From Figure \ref{fig:metric}, GPU is better than MIC and much better than CPU for the benchmarks. This illustrates that when combining performance efficiency, energy efficiency and monetary cost efficiency, GPU performs better compared to CPU and MIC for the benchmarks. Since MIC outperforms CPU for the benchmarks excluding BFS, for some intensive computing applications designed for HPC in heterogeneous computing infrastructures such as BFS, CPU still outperforms MIC when we consider overall benefits.
