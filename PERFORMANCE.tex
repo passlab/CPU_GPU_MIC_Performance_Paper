@@ -54,12 +54,27 @@ The system contains one MIC coprocessor, Xeon Phi QS-7120P (passive-cooled model
 \subsection{Measurement}
 %\vspace{-4mm} 
 
-CPU and MIC versions of each of the benchmarks are similar C programs annotated with OpenMP. 
+The CPU and MIC versions of each of the benchmarks are similar C programs annotated with OpenMP. 
 GPU versions are implemented using CUDA. MIC supports two execution modes: native and offload. 
-In the native mode the application runs entirely within the co-processor. The offload mode allows for CPU to execute regions of the application code with the co-processor. These regions are defined using offloading pragma and include directives for transferring data. The offload mode also supports conditional offload directives, which may be used to decide at runtime whether a region should be offloaded to the co-processor or should be executed on CPU. We execute the codes on MIC using the offload mode, a system thread 
+In the native mode the application runs entirely within the co-processor. The offload mode allows for CPU to 
+execute regions of the application code with the co-processor. These regions are defined using offloading pragma 
+and include directives for transferring data. The offload mode also supports conditional offload directives, 
+which may be used to decide at runtime whether a region should be offloaded to the co-processor or 
+should be executed on CPU. We execute the codes on MIC using the offload mode. On MIC, a system thread 
 is reserved to run the offload daemon, and a maximum of 240 threads are launched for the applications.
 
-Execution time can be utilized as performance. However, since CPU, GPU and MIC are implemented in different architectures and they are designed in diverse hardware cores that have different definition and standard, it's hard to compare performance efficiency between different architectures. One way to compare their performance is the peak floating-point operations per second (FLOPS). In order to get fair results, we choose problem size of benchmarks that are large enough to eliminate the influence of instant changes of performance, power consumption, temperature and data transfer in and out of GPU/MIC. Problem sizes of all applications are fixed at 12000 for LUD, 193000 for CFD, 32000 for NW, 64M for BFS and 1024 with 20000 loops for Hotspot. Threads available are assigned in maximum for CPU, GPU and MIC. The execution time shown is an average over ten runs.
+Execution time, e.g. floating-point operations per second (FLOPS), can be utilized as performance. 
+However, since CPU, GPU and MIC are implemented in 
+different architectures and the execution time also include cost for data movement between CPU and accelerators 
+for offloading execution in the GPU and MIC experiments, comparing absolute parallelism and performance efficiency between 
+different architectures could be misleading. Thus in our comparision, we use normalized performance efficiency with CPU 
+execution time as baseline, and count in data movement cost for GPU/MIC as part of the execution time. 
+%One way to compare their performance is the peak floating-point operations per second (FLOPS). 
+%In order to get fair results, 
+We choose problem sizes that are large enough to 
+minimize the influence of instant changes of performance, power consumption, 
+temperature and data transfer in and out of GPU/MIC. 
+Problem sizes of all applications are fixed at 12000 for LUD, 193000 for CFD, 32000 for NW, 64M for BFS and 1024 with 20000 loops for Hotspot. Threads available are assigned in maximum for CPU, GPU and MIC. The execution time shown is an average over ten runs.
 
 NVML (Nvidia Management Library) \cite{R:16} is a runtime library to measure power consumption when executing the kernel. The nvidia-smi (Nvidia System Management Interface) is recommended from Nvidia to measure power consumption. But because it is a command line utility that is based on top of the NVML library and intended to aid in the management and monitoring of Nvidia GPU, the rate of sampling power consumption is very low so that we could not get the record of sudden change in power when executing the kernel for a very long time. To deal with this problem, nvmlDeviceGetPowerUsage in the NVML library is a better option. It obtains the GPU's power consumption accurate within 5 watts error in milliwatts precision for the entire board. 
 %is updated at roughly 60Hz. 
@@ -68,16 +83,21 @@ To get the runtime power consumption of a kernel with optimization for achieving
  Power consumption of MIC is calculated by the approximation of power timeslices provided by MIC System Management Control (micsmc) \cite{R:17} which has direct connection to the coprocessor I2C interface, an on-board I2C sensor bus and a third interface through the SMBus pins of the PCI Express connector to the system management solution which is used for obtaining data including frequency, power, temperature, memory usage, and CPU utilization per core. However, as additional types of data are requested, the delay between calls increases. Therefore, to capture the energy readings in the smallest timeslice available, only temperature and power data are recorded (both are printed when the same input parameter is given). The micsmc tool measures and reports every 22-28ms, which is sufficient for a detailed evaluation. 
 
 
- Recent Intel SandyBridge chips include the Running Average Power Limit (RAPL) interface \cite{R:15} which is designed to provide an infrastructure for keeping processors inside of a given user-specified power envelope. RAPL supports power capping PKG, PP0 and DRAM power planes by writing into the relevant model specific register (MSR). The internal circuitry can estimate current energy usage based on a model driven by hardware counters and temperature. The results of this model are available to the user via an MSR which can be accessed to get power consumption for each power plane and temperature with an update frequency on the order of milliseconds. 
+ For CPU power measurement, we use the Intel Running Average Power Limit (RAPL) interface \cite{R:15} which is designed to provide an infrastructure for keeping processors inside of a given user-specified power envelope. RAPL supports power capping PKG, PP0 and DRAM power planes by writing into the relevant model specific register (MSR). The internal circuitry can estimate current energy usage based on a model driven by hardware counters and temperature. The results of this model are available to the user via an MSR which can be accessed to get power consumption for each power plane and temperature with an update frequency on the order of milliseconds. 
 
 
 
 
 \subsection{Performance and Performance Efficiency}
 %\vspace{-4mm} 
-Performance and performance efficiency are two most important factors to evaluate architectures of CPU, GPU and MIC. The performance are summarized as speedup in Figure \ref{fig:speedup}. It presents the average normalized execution time observed for LUD, CFD, NW, BFS and HotSpot. The speedups of GPU range from 2.3-103X as CPU implementations and the speedups of MIC range from 1.2-24X as CPU implementations excluding BFS.
-
-With respect to GPU and MIC, data are copied to and from the accelerator/coprocessor under the explicit control of the programmer and runtime. Programmers mark code blocks with C/C++ pragmas for MIC and leverage runtime library for GPU. The compiler runtime transfers data from the host to the device, performs computation on the device and returns results back to the host. From Figure \ref{fig:speedup}, GPU outperforms MIC by 2 to 33 times. GPU is better than MIC at handling huge data because of its streaming multi-processor (SM) that can handle millions of threads.  
+%Performance and performance efficiency are two most important factors to evaluate architectures of CPU, GPU and MIC. 
+For performance, Figure~\ref{fig:speedup} includes the average normalized execution time observed for LUD, CFD, NW, BFS and HotSpot. 
+The speedups of GPU range from 2.3-103X as CPU implementations and the speedups of MIC range from 1.2-24X as CPU 
+implementations excluding BFS.
+%With respect to GPU and MIC, data are copied to and from the accelerator/coprocessor under the explicit control of the programmer and runtime. Programmers mark code blocks with C/C++ pragmas for MIC and leverage runtime library for GPU. The runtime transfers data from the host to the device, performs computation on the device and returns results back to the host. 
+%From Figure \ref{fig:speedup}, 
+Overall, GPU outperforms MIC by 2 to 33 times. GPU is better than MIC at handling huge data 
+because of its streaming multi-processor (SM) that achieves thousand-degree of concurrency of lightweight threads. % of threads.  
 
     \begin{figure}[h!]
   \centering
@@ -91,19 +111,34 @@ With respect to GPU and MIC, data are copied to and from the accelerator/coproce
 \end{minipage}%
 \end{figure}
 
-The stream mechanism offered by CUDA allows the hiding of the communication overhead, in particular of the copies between CPU and GPU, provided that the computation executed concurrently with the communication is large enough. MIC is incapable of overcoming the extra processing capabilities even though MIC has superior memory transfer latency. The overheads of MIC, e.g., data offloading overheads of memory transfer and computation overheads between CPU and MIC, are much more than GPU in the benchmarks. In native mode of MIC, applications directly execute on coprocessor without being offloaded to coprocessor. Such applications are required to be compiled and built on the host system using -mmic supporting flag which enables the compiler to generate an object file for Xeon Phi architecture. Executing applications in native mode requires all the dynamic libraries and executable must be present on coprocessor. MIC can take advantage of the native mode and would outperform GPU. But with respect to the benchmarks, the implementation for MIC is offload mode instead of native mode. Running on an MIC in offload mode is possible to emulate the CUDA streaming mechanism that supports independent execution flows, but performance in offload mode remains low compared to a GPU with the same number of computing unit for a problem of fixed size. 
+The stream mechanism offered by CUDA allows the hiding of the communication overhead, 
+in particular of the copies between CPU and GPU, provided that the computation executed concurrently 
+with the communication is large enough. MIC is incapable of overcoming the extra processing capabilities. 
+%even though MIC has better memory transfer latency. 
+The overheads of MIC, e.g., data offloading overheads of memory transfer and computation overheads 
+between CPU and MIC, are much higher than GPU in the benchmarks. In native mode of MIC, applications directly execute on coprocessor without being offloaded to coprocessor. Such applications are required to be compiled and built on the host system using -mmic supporting flag which enables the compiler to generate an object file for Xeon Phi architecture. 
+Executing applications in native mode requires all the dynamic libraries and executable must be present on coprocessor. 
+MIC can take advantage of the native mode and would outperform GPU. 
+But with respect to our experiment, the implementation for MIC is offload mode instead of native mode. Running on an MIC in 
+offload mode is possible to emulate the CUDA streaming mechanism that supports independent execution flows, but performance in offload mode remains low compared to a GPU with the same number of computing unit for a problem of fixed size. 
 
 %\vspace{-1mm}
 
 %\vspace{-1mm}
   
-  For traditional homogeneous architectures, the performance efficiency is defined as follows. Let $T_{s}$ represent execution time for serial computing of one core, $P$ is the number of cores and $T_{p}$ is the execution time for concurrent computing with the number of $P$ cores in a given application. Thus the speedup $S_{p}$ and performance efficiency $E_{p}$ are defined as:
+%  For traditional homogeneous architectures, the performance efficiency is defined as follows. Let $T_{s}$ represent execution time for serial computing of one core, $P$ is the number of cores and $T_{p}$ is the execution time for concurrent computing with the number of $P$ cores in a given application. Thus the speedup $S_{p}$ and performance efficiency $E_{p}$ are defined as:
 %\vspace{-1mm} 
-\begin{equation}\label{equ:old_speedup}
-	{S_{p}} = \frac{T_{s}}{T_{p}} \quad and \quad {E_{p}} = \frac{S_{p}}{P}
-\end{equation}
+%\begin{equation}\label{equ:old_speedup}
+%	{S_{p}} = \frac{T_{s}}{T_{p}} \quad and \quad {E_{p}} = \frac{S_{p}}{P}
+%\end{equation}
   
- Since the benchmarks are designed using single precision floating point for computation, the theoretical peak FLOPS of CPU, GPU and MIC in this system are respectively 1.3 TFLOPS (Tera FLOPS), 3.11 TFLOPS and 4.87 TFLOPS. We use CPU as the baseline and normalize the performance efficiency. Let $T_{b}$ denote base execution time and $T_{t}$ denote target execution time. $S_{p}$ represents speedup calculated as the ratio of $T_{b}$ to $T_{t}$. The theoretical peak FLOPS performance of heterogeneous architectures is denoted as $F_{t}$. Thus the formula of performance efficiency $E_{p}$ is as follows:
+Performance efficiency represents the gap between practical performance and theoretical performance in heterogeneous architectures, which is a critical consideration to find out the factors to improve architecture designs. 
+However, to compare the efficiency between different architectures, we instead use CPU as 
+the baseline and normalize the performance efficiency. 
+% ince the benchmarks are designed using single precision floating point for computation, the
+The theoretical peak FLOPS of CPU, GPU and MIC in the system, for which we use single precision, 
+are respectively 1.3 TFLOPS (Tera FLOPS), 3.11 TFLOPS and 4.87 TFLOPS. 
+Let $T_{b}$ denote base execution time and $T_{t}$ denote target execution time. $S_{p}$ represents speedup calculated as the ratio of $T_{b}$ to $T_{t}$. The theoretical peak FLOPS performance of heterogeneous architectures is denoted as $F_{t}$. Thus the formula of performance efficiency $E_{p}$ is as follows:
 
 %\vspace{-1mm} 
 \begin{equation}\label{equ:new_speedup}
@@ -121,7 +156,7 @@ The stream mechanism offered by CUDA allows the hiding of the communication over
 \end{minipage}%
 \end{figure}
   
-Performance efficiency represents the gap between practical performance and theoretical performance in heterogeneous architectures, which is a critical consideration to find out the factors to improve architecture designs. From Figure \ref{fig:performanceE}, we conclude that CPU has a better performance efficiency than GPU in LUD and better than MIC in LUD, BFS and HotSpot. Since the theoretical performance of GPU is 3.4X as CPU, but the practical speedup is only 2.3X as CPU, the performance efficiency of CPU is better than GPU in LUD. With respect to MIC, similarly even though MIC has 1.2X and 2.2X better practical performance than MIC in LUD and HotSpot respectively, MIC has 2.4X better theoretical performance than CPU. Therefore, the performance efficiency of CPU is better than MIC in LUD and HotSpot.
+From Figure \ref{fig:performanceE}, we conclude that CPU has a better performance efficiency than GPU in LUD and better than MIC in LUD, BFS and HotSpot. Since the theoretical performance of GPU is 3.4X as CPU, but the practical speedup is only 2.3X as CPU, the performance efficiency of CPU is better than GPU in LUD. With respect to MIC, similarly even though MIC has 1.2X and 2.2X better practical performance than MIC in LUD and HotSpot respectively, MIC has 2.4X better theoretical performance than CPU. Therefore, the performance efficiency of CPU is better than MIC in LUD and HotSpot.
 
 
 
@@ -129,7 +164,10 @@ Performance efficiency represents the gap between practical performance and theo
 \subsection{Power Consumption and Energy Efficiency}
 %\vspace{-4mm} 
 
-There are growing numbers of commercial high-performance computing solutions using various accelerators. Therefore, power consumption has increasingly become a concern. In addition, a better understanding of the power tradeoffs of heterogeneous architectures is needed to guide usage in server clusters and data centers. 
+%There are growing numbers of commercial HPC solutions using various accelerators. Therefore, 
+Power consumption for both scientific and commercial HPC computing has increasingly become a concern.
+A better understanding of the power tradeoffs of heterogeneous architectures is needed to 
+guide usage in server clusters and data centers. 
 
     \begin{figure}[h!]
   \centering
@@ -173,7 +211,10 @@ According to our measurement in Figure \ref{fig:energyE}, GPU outperforms MIC an
 \subsection{Temperature}
 %\vspace{-4mm} 
 
-The temperature of running kernels on heterogeneous architecture devices is also a critical consideration for high-performance computing in server clusters and data centers because we need to pay for cooling down systems and to utilize them efficiently. 
+The temperature of a computing system is also critical for large scale HPC systems in the server room 
+because of the need for the cooling systems that have become a significant cost of operating a data center. Knowing the
+temerature of different part of the systems also help designing more efficent cooling systems, e.g. 
+the wind flow, and the layout of sink and fan etc. 
 
     \begin{figure}[h!]
   \centering
@@ -192,7 +233,11 @@ By comparing results in Figure \ref{fig:temperature}, MIC stays in higher temper
 
 \subsection{Monetary Cost Efficiency} 
 %\vspace{-4mm} 
-New challenges need to be solved in order to analyze the monetary cost corresponding to the performance of GPU, MIC and CPU especially in computing centers where should make an efficient or suitable decision balancing the performance and cost. Thus the monetary cost efficiency is important to consider. Let $S_{p}$ and $C$ represent speedup of performance and monetary cost, respectively. We utilize CPU as the baseline and normalize the performance efficiency so the formula of monetary cost efficiency $E_{c}$ is as follows:
+The investment and return trade-off is also critical by analyzing the monetary cost with regards to 
+the performance of GPU, MIC and CPU especially in large scale computing centers.
+%where should make an efficient or suitable decision balancing the performance and cost. 
+Thus the monetary cost efficiency is important to consider, which we devise in the following approach. 
+Let $S_{p}$ and $C$ represent speedup of performance and monetary cost, respectively. We utilize CPU as the baseline and normalize the performance efficiency so the formula of monetary cost efficiency $E_{c}$ is as follows:
 \begin{equation}\label{equ:monetaryE}
   {E_{c}} = \frac{S_{p}}{C}
 \end{equation}
@@ -213,9 +258,23 @@ Monetary cost efficiency represents the efficiency of the performance speedup to
 
 \subsection{Productivity of Programming} 
  % \vspace{-4mm} 
-As we know, the productivity of programming is difficult to measure under a standard approach because the ability of each programmer and the characteristics of each programming language are totally different. One way to compare the productivity of programming for different language is the source lines of code (SLOC). SLOC is one of the most widely used sizing metric in industry and literature. It is the key input for most of the major cost estimation models such as COCOMO, SLIM, and SEER-SEM.  Its long-standing tradition is due to the fact that SLOC is the direct result of programming work as the most perceivable indicator of software cost. The SLOC counting standard \cite{nguyen2007sloc} is followed for all SLOC measurements of the benchmarks.
+As we know, the productivity of programming is difficult to measure under a standard approach because the ability of each programmer and the characteristics of each programming language are totally different. One way to compare the productivity of programming for different language is the source lines of code (SLOC). SLOC is one of the most widely used sizing metric in industry and literature. It is the key input for most of the major cost estimation models such as COCOMO, SLIM, and SEER-SEM.  Its long-standing tradition is due to the fact that SLOC is the direct result of programming work as the most perceivable indicator of software cost. The SLOC counting standard \cite{nguyen2007sloc} is followed for all SLOC measurements of the benchmarks. We show the SLOC of the benchmarks for 
+the three architectures in Figure~\ref{fig:sloc}. CUDA-based GPU versions of those benchmarks generally needs more lines of code than 
+CPU/MIC versions, which are based on OpenMP.  
 
- The advantage of the programming models for MICs and CPUs is reducing source code size. In principle, one of the main advantages of the Intel MIC technology, with respect to other coprocessors and accelerators, is the simplicity of the porting. Programmers compile their existing source codes specifying MIC as the target architecture. Classical programming languages used in high-performance computing - Fortran/C/C++ - as well as well-known parallel paradigms - OpenMP or MPI - may be directly employed regarding MIC as a \"classic\" x86 based (many-core) architecture. An Intel MIC may be accessed directly as a stand-alone system running executables in the native mode. However, offload execution mode is available and used more widely. Adopting the offload execution model, a code runs mostly on the host but selected regions of the code are marked through directives or APIs to be executed on MIC coprocessor. On the contrary, the porting from the classical programming languages such as Fortran/C/C++ to CUDA needs more effort because CUDA is a significantly different programming model.
+One of the main goals of high-level programming models such as OpenMP for MICs and CPUs is to improve programmability. 
+In general, programming on Intel MIC using OpenMP is easier than programming using CUDA on GPUs, thus allowing for easier 
+migration of CPU-based applications to MIC. %represents a easier migration path , with respect to other coprocessors and accelerators, is the simplicity of the porting. 
+Programmers annotate CPU-based OpenMP codes by specifying MIC as the target architecture as well as directives for data movement. 
+An Intel MIC may be accessed directly as a stand-alone system running executables in the native mode, which would requires no or even 
+less modification of the original OpenMP program for MIC. We however, also observed the fluctuation of performance when we optimize
+the MIC program for vectorizations, e.g. pooly aligned data for vectorization could lead to significant degradation of performance. 
+%Classical programming languages used in high-performance computing - Fortran/C/C++ - as well as well-known parallel paradigms - OpenMP or MPI - may be directly employed regarding MIC as a \"classic\" x86 based (many-core) architecture. 
+The porting from the legacy Fortran/C/C++ program, either sequential or CPU paralell code, to CUDA 
+requires more effort because CUDA is a significantly different programming model and execution model.
+
+%
+%However, offload execution mode is available and used more widely. Adopting the offload execution model, a code runs mostly on the host but selected regions of the code are marked through directives or APIs to be executed on MIC coprocessor. On the contrary, 
 
   
     \begin{figure}[h!]
@@ -233,7 +292,10 @@ As we know, the productivity of programming is difficult to measure under a stan
 \subsection{Unified Efficiency Metric}
 %\vspace{-4mm} 
 
-To gain further insights into the performance of each benchmark for different architectures, this work considers a unified efficiency metrics obtained from performance efficiency, energy efficiency and monetary efficiency for overall comparison of the three architectures. The main idea of the unified efficiency metric is that different efficiency represents the strengths and weaknesses of different architectures.
+To gain further insights into the overall performance of each benchmark for different architectures, 
+this work considers a unified efficiency metrics obtained from three factors, performance efficiency, energy efficiency and 
+monetary efficiency, for overall comparison of the three architectures. %The main idea of the unified efficiency metric 
+%is that different efficiency represents the strengths and weaknesses of different architectures.
 %\vspace{-1mm}
 
     \begin{figure}[h!]
@@ -242,14 +304,15 @@ To gain further insights into the performance of each benchmark for different ar
     \centering
    \centering
      \includegraphics[width=1\linewidth]{Metric.pdf}    
-  \caption{Unified efficiency metric leverages performance efficiency, energy efficiency and monetary efficiency comparing strengths and weaknesses of CPU, GPU and MIC. This result calculates the unified efficiency metric with the same value of weight for performance efficiency, energy efficiency and monetary cost efficiency.}
+  \caption{Unified efficiency metric leverages performance efficiency, energy efficiency and monetary efficiency. % comparing strengths and weaknesses of CPU, GPU and MIC. 
+  The unified efficiency metric in the figure uses the same value of weight for the three factors.}
   \label{fig:metric}
 \end{minipage}%
 \end{figure}
 
 %\vspace{-1mm}
 
-With respect of the requirement of users who focus on diverse factors for three architectures, we leverage three weights as coefficient respectively for performance efficiency, energy efficiency and monetary cost efficiency of the unified efficiency metric. Users can adjust the weight between three efficiencies according to the purpose of different aspects.
+With respect of the requirement of users who focus on diverse factors for three architectures, we leverage three weights as coefficient respectively for performance efficiency, energy efficiency and monetary cost efficiency of the unified efficiency metric. Users can adjust the weight between three efficiencies according to the purpose of different aspects. The model can also be easily extended by adding other factors, such as temperature. 
 
 Let $E_{p}$ represent performance efficiency that is the ratio of speedup (based on CPU) to the theoretical peak performance of the target, $E_{e}$ be the energy efficiency that is the ratio of practical FLOPS to average power consumption of the specific application for different target devices, and $E_{c}$ represent monetary cost efficiency that is the ratio of speedup to monetary cost. $W_{p}$, $W_{e}$ and $W_{c}$ represent the weight of performance efficiency, energy efficiency and monetary cost efficiency respectively. Let $S_{p}$ represent speedup; $F_{t}$ represents theoretical peak FLOPS; $F_{p}$ represents practical FLOPS; $P$ represents power consumption; and $C$ represents monetary cost. The unified efficiency metric $E_{u}$ formula is as follows:
 %\vspace{-1mm} 
@@ -270,4 +333,4 @@ Let $T_{b}$ denote base execution time, $T_{t}$ denote target execution time and
 \end{equation}
 
   
- To compare the results of three architectues, we calculate the unified efficiency metric with the same value of weight for performance efficiency, energy efficiency and monetary cost efficiency and normalize the results based on CPU. From Figure \ref{fig:metric}, GPU is better than MIC and much better than CPU for the benchmarks. This illustrates that when combining performance efficiency, energy efficiency and monetary cost efficiency, GPU performs better compared to CPU and MIC for the benchmarks. Since MIC outperforms CPU for the benchmarks excluding BFS, for some intensive computing applications designed for HPC in heterogeneous computing infrastructures such as BFS, CPU still outperforms MIC when we consider overall benefits.
+ To compare the results of three architectues, we calculate the unified efficiency metric with the same value of weight for the three factors and normalize the results based on CPU. From Figure \ref{fig:metric}, GPU is better than MIC and much better than CPU for the benchmarks. This illustrates that when combining performance efficiency, energy efficiency and monetary cost efficiency, GPU performs better compared to CPU and MIC for the benchmarks. Since MIC outperforms CPU for the benchmarks excluding BFS, for some intensive computing applications designed for HPC in heterogeneous computing infrastructures such as BFS, CPU still outperforms MIC when we consider overall benefits.
