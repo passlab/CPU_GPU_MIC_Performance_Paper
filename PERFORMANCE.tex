@@ -197,10 +197,10 @@ guide usage in server clusters and data centers.
 
 %\vspace{-2mm}
 
-With regard to scientific computing programs, FLOPS per watt has gained popularity in evaluating the energy efficiency of high-performance computing applications. Practical FLOPS and power consumption are respectively denoted as $F_{p}$ and $P$. We utilize CPU as the baseline and normalize the energy efficiency so the formula of energy efficiency $E_{e}$ is as follows:
+With regard to scientific computing programs, FLOPS per watt has gained popularity in evaluating the energy efficiency of high-performance computing applications. Let $F_{p}$ present practical FLOPS. Power consumption and execution time are respectively denoted as $P$ and $T$. We utilize CPU as the baseline and normalize the energy efficiency so the formula of energy efficiency $E_{e}$ is as follows:
 %\vspace{-1mm} 
 \begin{equation}\label{equ:energyE}
-	{E_{e}} = \frac{F_{p}}{P}
+  {E_{e}} = \frac{F_{p}}{PT}
 \end{equation}
   
 According to our measurement in Figure \ref{fig:energyE}, GPU outperforms MIC and CPU in all benchmarks while MIC outperforms CPU in CFD, NW and HotSpot. Because FLOPS of GPU in the benchmarks is higher than MIC and CPU, even though the power consumption of GPU is more than MIC and CPU in HotSpot, GPU still has better energy efficiency. With respect to LUD between MIC and CPU, because the power consumption of MIC in LUD is 1.4X as CPU and MIC performs 1.2X better FLOPS performance than CPU, CPU outperforms MIC.
@@ -314,21 +314,21 @@ monetary efficiency, for overall comparison of the three architectures. %The mai
 
 With respect of the requirement of users who focus on diverse factors for three architectures, we leverage three weights as coefficient respectively for performance efficiency, energy efficiency and monetary cost efficiency of the unified efficiency metric. Users can adjust the weight between three efficiencies according to the purpose of different aspects. The model can also be easily extended by adding other factors, such as temperature. 
 
-Let $E_{p}$ represent performance efficiency that is the ratio of speedup (based on CPU) to the theoretical peak performance of the target, $E_{e}$ be the energy efficiency that is the ratio of practical FLOPS to average power consumption of the specific application for different target devices, and $E_{c}$ represent monetary cost efficiency that is the ratio of speedup to monetary cost. $W_{p}$, $W_{e}$ and $W_{c}$ represent the weight of performance efficiency, energy efficiency and monetary cost efficiency respectively. Let $S_{p}$ represent speedup; $F_{t}$ represents theoretical peak FLOPS; $F_{p}$ represents practical FLOPS; $P$ represents power consumption; and $C$ represents monetary cost. The unified efficiency metric $E_{u}$ formula is as follows:
+Let $E_{p}$ represent performance efficiency that is the ratio of speedup (based on CPU) to the theoretical peak performance of the target, $E_{e}$ be the energy efficiency that is the ratio of practical FLOPS to average power consumption of the specific application for different target devices, and $E_{c}$ represent monetary cost efficiency that is the ratio of speedup to monetary cost. $W_{p}$, $W_{e}$ and $W_{c}$ represent the weight of performance efficiency, energy efficiency and monetary cost efficiency respectively. Let $S_{p}$ represent speedup; $F_{t}$ represents theoretical peak FLOPS; $F_{p}$ represents practical FLOPS; $P$ represents power consumption; $T_{t}$ denote target execution time; and $C$ represents monetary cost. The unified efficiency metric $E_{u}$ formula is as follows:
 %\vspace{-1mm} 
   \begin{equation}\label{equ:metric1}
     \begin{split}
   {E_{u}} &  = E_{p}W_{p}+E_{e}W_{e}+E_{c}W_{c} \\
-   & = \frac{S_{p}W_{p}}{F_{t}}+\frac{F_{p}W_{e}}{P}+\frac{S_{p}W_{c}}{C}
+   & = \frac{S_{p}W_{p}}{F_{t}}+\frac{F_{p}W_{e}}{PT_{t}}+\frac{S_{p}W_{c}}{C}
   \end{split}
 \end{equation}
   
-Let $T_{b}$ denote base execution time, $T_{t}$ denote target execution time and $F_{n}$ denote the number of floating-point operations. Since $S_{p}$ = $T_{b}$ / $T_{t}$ and $F_{p}$ = $F_{n}$ / $T_{t}$, the metric $E_{u}$ is as follows:
+Let $T_{b}$ denote base execution time and $F_{n}$ denote the number of floating-point operations. Since $S_{p}$ = $T_{b}$ / $T_{t}$ and $F_{p}$ = $F_{n}$ / $T_{t}$, the metric $E_{u}$ is as follows:
 %  \vspace{-1mm} 
   \begin{equation}\label{equ:metric1}
     \begin{split}
-  {E_{u}} &  = \frac{S_{p}W_{p}}{F_{t}}+\frac{F_{n}W_{e}}{PT_{t}}+\frac{S_{p}W_{c}}{C} \\
-   & = {S_{p}}(\frac{W_{p}}{F_{t}}+\frac{F_{n}W_{e}}{PT_{b}}+\frac{W_{c}}{C})
+  {E_{u}} &  = \frac{S_{p}W_{p}}{F_{t}}+\frac{F_{n}W_{e}}{P{T_{t}}^2}+\frac{S_{p}W_{c}}{C} \\
+   & = {S_{p}}(\frac{W_{p}}{F_{t}}+\frac{F_{n}W_{e}}{PT_{t}T_{b}}+\frac{W_{c}}{C})
   \end{split}
 \end{equation}
 
