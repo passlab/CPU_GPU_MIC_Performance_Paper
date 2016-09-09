@@ -65,9 +65,9 @@ is reserved to run the offload daemon, and a maximum of 240 threads are launched
 
 Execution time, e.g. floating-point operations per second (FLOPS), can be utilized as performance. 
 However, since CPU, GPU and MIC are implemented in 
-different architectures and the execution time also include cost for data movement between CPU and accelerators 
+different architectures and the execution time also includes cost for data movement between CPU and accelerators 
 for offloading execution in the GPU and MIC experiments, comparing absolute parallelism and performance efficiency between 
-different architectures could be misleading. Thus in our comparision, we use normalized performance efficiency with CPU 
+different architectures could be misleading. Thus in our comparison, we use normalized performance efficiency with CPU 
 execution time as baseline, and count in data movement cost for GPU/MIC as part of the execution time. 
 %One way to compare their performance is the peak floating-point operations per second (FLOPS). 
 %In order to get fair results, 
@@ -183,8 +183,7 @@ guide usage in server clusters and data centers.
  Idle power is the power consumed by the devices when the device is in a long idle state, i.e., when the devices are doing nothing for a long period of time. As Figure \ref{fig:power} illustrates, at the idle state the power consumption of CPU is much lower than GPU and MIC and is evaluated 28\% and 19\% for GPU and MIC respectively. With respect to the benchmarks, MIC consumes more power than GPU excluding HotSpot and CPU excluding NW. The power consumption of MIC is 1.01-2.37X as GPU and 1.20-1.68X as CPU. GPU consumes more power than MIC and CPU in HotSpot while CPU consumes more power than MIC and GPU in NW. One reason is that certain factors of power consumption of MIC such as the execution of the graphics pipeline, bus communication and memory access consume more power than the corresponding parts of GPU. For certain benchmarks, GPU and MIC are more effective than CPU for the computations that use a small size of input data in communication between the host and devices and perform well in compute-intensive operations which reduce the workload of communication and computation to decrease power consumption. For some workload, memory-bound causes a decrease in power consumption, as the duration of execution is reducing, consuming less cumulative power. In other words, the intensive workload of MIC and GPU should generally use the high core clock so that it completes operation as soon as possible to minimize energy. 
  %The reason might be that NW and HotSpot take more memory accesses than LUD, CFD and BFS, and that MIC uses less energy for memory accesses.
 
-
-    \begin{figure}[h!]
+   \begin{figure}[h!]
   \centering
   \begin{minipage}{0.5\textwidth}
     \centering
@@ -197,13 +196,13 @@ guide usage in server clusters and data centers.
 
 %\vspace{-2mm}
 
-With regard to scientific computing programs, FLOPS per watt has gained popularity in evaluating the energy efficiency of high-performance computing applications. Let $F_{p}$ present practical FLOPS. Power consumption and execution time are respectively denoted as $P$ and $T$. We utilize CPU as the baseline and normalize the energy efficiency so the formula of energy efficiency $E_{e}$ is as follows:
+With regard to scientific computing programs, FLOPS per joule has gained popularity in evaluating the energy efficiency of high-performance computing applications. Practical FLOPS and power consumption are respectively denoted as $F_{p}$ and $P$. We utilize CPU as the baseline and normalize the energy efficiency so the formula of energy efficiency $E_{e}$ is as follows:
 %\vspace{-1mm} 
 \begin{equation}\label{equ:energyE}
-  {E_{e}} = \frac{F_{p}}{PT}
+  {E_{e}} = \frac{F_{p}}{P}
 \end{equation}
   
-According to our measurement in Figure \ref{fig:energyE}, GPU outperforms MIC and CPU in all benchmarks while MIC outperforms CPU in CFD, NW and HotSpot. Because FLOPS of GPU in the benchmarks is higher than MIC and CPU, even though the power consumption of GPU is more than MIC and CPU in HotSpot, GPU still has better energy efficiency. With respect to LUD between MIC and CPU, because the power consumption of MIC in LUD is 1.4X as CPU and MIC performs 1.2X better FLOPS performance than CPU, CPU outperforms MIC.
+According to our measurement in Figure \ref{fig:energyE}, GPU outperforms MIC and CPU in all benchmarks while MIC outperforms CPU in CFD, NW and HotSpot. Because FLOPS of GPU in the benchmarks is higher than MIC and CPU, even though the power consumption of GPU is more than MIC and CPU in HotSpot, GPU still has better energy efficiency. With respect to LUD between MIC and CPU, because the power consumption of MIC is 1.4X as CPU, and MIC performs 1.2X better FLOPS performance than CPU, CPU outperforms MIC.
 
 %  \vspace{-2mm} 
 
@@ -211,9 +210,9 @@ According to our measurement in Figure \ref{fig:energyE}, GPU outperforms MIC an
 \subsection{Temperature}
 %\vspace{-4mm} 
 
-The temperature of a computing system is also critical for large scale HPC systems in the server room 
+The temperature of a computing system is also critical for large-scale HPC systems in the server room 
 because of the need for the cooling systems that have become a significant cost of operating a data center. Knowing the
-temerature of different part of the systems also help designing more efficent cooling systems, e.g. 
+temperature of different part of the systems also help designing more efficient cooling systems, e.g. 
 the wind flow, and the layout of sink and fan etc. 
 
     \begin{figure}[h!]
@@ -231,18 +230,17 @@ By comparing results in Figure \ref{fig:temperature}, MIC stays in higher temper
 
 
 
+
 \subsection{Monetary Cost Efficiency} 
 %\vspace{-4mm} 
 The investment and return trade-off is also critical by analyzing the monetary cost with regards to 
-the performance of GPU, MIC and CPU especially in large scale computing centers.
+the performance of GPU, MIC and CPU especially in large-scale computing centers.
 %where should make an efficient or suitable decision balancing the performance and cost. 
 Thus the monetary cost efficiency is important to consider, which we devise in the following approach. 
 Let $S_{p}$ and $C$ represent speedup of performance and monetary cost, respectively. We utilize CPU as the baseline and normalize the performance efficiency so the formula of monetary cost efficiency $E_{c}$ is as follows:
 \begin{equation}\label{equ:monetaryE}
   {E_{c}} = \frac{S_{p}}{C}
 \end{equation}
-
-Monetary cost efficiency represents the efficiency of the performance speedup to monetary cost paid for heterogeneous architectures on specific mainstream CPU, GPU and MIC, which also refers to the performance speedup of heterogeneous architectures per dollar. The monetary cost is presented in Table \ref{tab:specification}. From Figure \ref{fig:monetaryE}, the monetary cost efficiency of GPU performs well than CPU and MIC for the benchmarks because the monetary cost of CPU is 3.9X as GPU and the monetary cost of MIC is 1.5X as GPU. With regard to CPU and MIC, the monetary cost efficiency of MIC is better than CPU for the benchmarks excluding BFS because the speedup performance of CPU is 3.3X as MIC but the monetary cost of CPU is only 2.6X as MIC. Since the speedup performance of MIC in BFS is only 30\% of CPU, the monetary cost efficiency of CPU is still better than MIC in BFS.
 
     \begin{figure}[h!]
   \centering
@@ -255,6 +253,10 @@ Monetary cost efficiency represents the efficiency of the performance speedup to
 \end{minipage}%
 \end{figure}
 
+Monetary cost efficiency represents the efficiency of the performance speedup to monetary cost paid for heterogeneous architectures on specific mainstream CPU, GPU and MIC, which also refers to the performance speedup of heterogeneous architectures per dollar. The monetary cost is presented in Table \ref{tab:specification}. From Figure \ref{fig:monetaryE}, the monetary cost efficiency of GPU performs well than CPU and MIC for the benchmarks because the monetary cost of CPU is 3.9X as GPU and the monetary cost of MIC is 1.5X as GPU. With regard to CPU and MIC, the monetary cost efficiency of MIC is better than CPU for the benchmarks excluding BFS because the speedup performance of CPU is 3.3X as MIC but the monetary cost of CPU is only 2.6X as MIC. Since the speedup performance of MIC in BFS is only 30\% of CPU, the monetary cost efficiency of CPU is still better than MIC in BFS.
+
+
+
 
 \subsection{Productivity of Programming} 
  % \vspace{-4mm} 
@@ -264,19 +266,17 @@ CPU/MIC versions, which are based on OpenMP.
 
 One of the main goals of high-level programming models such as OpenMP for MICs and CPUs is to improve programmability. 
 In general, programming on Intel MIC using OpenMP is easier than programming using CUDA on GPUs, thus allowing for easier 
-migration of CPU-based applications to MIC. %represents a easier migration path , with respect to other coprocessors and accelerators, is the simplicity of the porting. 
+migration of CPU-based applications to MIC. It represents an easier migration path and is the simplicity of the porting with respect to other coprocessors and accelerators.
 Programmers annotate CPU-based OpenMP codes by specifying MIC as the target architecture as well as directives for data movement. 
-An Intel MIC may be accessed directly as a stand-alone system running executables in the native mode, which would requires no or even 
-less modification of the original OpenMP program for MIC. We however, also observed the fluctuation of performance when we optimize
-the MIC program for vectorizations, e.g. pooly aligned data for vectorization could lead to significant degradation of performance. 
+An Intel MIC may be accessed directly as a stand-alone system running executables in the native mode, which would require no or even 
+less modification of the original OpenMP program for MIC. We, however, also observed the fluctuation of performance when we optimize
+the MIC program for vectorizations, e.g. poorly aligned data for vectorization could lead to significant degradation of performance. 
 %Classical programming languages used in high-performance computing - Fortran/C/C++ - as well as well-known parallel paradigms - OpenMP or MPI - may be directly employed regarding MIC as a \"classic\" x86 based (many-core) architecture. 
-The porting from the legacy Fortran/C/C++ program, either sequential or CPU paralell code, to CUDA 
+The porting from the legacy Fortran/C/C++ program, either sequential or CPU parallel code, to CUDA 
 requires more effort because CUDA is a significantly different programming model and execution model.
 
 %
 %However, offload execution mode is available and used more widely. Adopting the offload execution model, a code runs mostly on the host but selected regions of the code are marked through directives or APIs to be executed on MIC coprocessor. On the contrary, 
-
-  
     \begin{figure}[h!]
   \centering
   \begin{minipage}{0.5\textwidth}
@@ -287,6 +287,8 @@ requires more effort because CUDA is a significantly different programming model
   \label{fig:sloc}
 \end{minipage}%
 \end{figure}
+  
+
 
 %    \vspace{-2mm} 
 \subsection{Unified Efficiency Metric}
@@ -294,9 +296,13 @@ requires more effort because CUDA is a significantly different programming model
 
 To gain further insights into the overall performance of each benchmark for different architectures, 
 this work considers a unified efficiency metrics obtained from three factors, performance efficiency, energy efficiency and 
-monetary efficiency, for overall comparison of the three architectures. %The main idea of the unified efficiency metric 
+monetary cost efficiency, for overall comparison of the three architectures. %The main idea of the unified efficiency metric 
 %is that different efficiency represents the strengths and weaknesses of different architectures.
 %\vspace{-1mm}
+
+%\vspace{-1mm}
+
+With respect to the requirement of users who focus on diverse factors for three architectures, we leverage three weights as coefficient respectively for performance efficiency, energy efficiency and monetary cost efficiency of the unified efficiency metric. Users can adjust the weights between three efficiencies in terms of the purpose of different aspects. The model can also be easily extended by adding other factors, such as temperature. 
 
     \begin{figure}[h!]
   \centering
@@ -310,27 +316,25 @@ monetary efficiency, for overall comparison of the three architectures. %The mai
 \end{minipage}%
 \end{figure}
 
-%\vspace{-1mm}
-
-With respect of the requirement of users who focus on diverse factors for three architectures, we leverage three weights as coefficient respectively for performance efficiency, energy efficiency and monetary cost efficiency of the unified efficiency metric. Users can adjust the weight between three efficiencies according to the purpose of different aspects. The model can also be easily extended by adding other factors, such as temperature. 
-
-Let $E_{p}$ represent performance efficiency that is the ratio of speedup (based on CPU) to the theoretical peak performance of the target, $E_{e}$ be the energy efficiency that is the ratio of practical FLOPS to average power consumption of the specific application for different target devices, and $E_{c}$ represent monetary cost efficiency that is the ratio of speedup to monetary cost. $W_{p}$, $W_{e}$ and $W_{c}$ represent the weight of performance efficiency, energy efficiency and monetary cost efficiency respectively. Let $S_{p}$ represent speedup; $F_{t}$ represents theoretical peak FLOPS; $F_{p}$ represents practical FLOPS; $P$ represents power consumption; $T_{t}$ denote target execution time; and $C$ represents monetary cost. The unified efficiency metric $E_{u}$ formula is as follows:
+Let $E_{p}$ represent performance efficiency that is the ratio of speedup (based on CPU) to the theoretical peak performance of the target, $E_{e}$ be the energy efficiency that is the ratio of practical FLOPS to average power consumption of the specific application for different target devices, and $E_{c}$ represent monetary cost efficiency that is the ratio of speedup to monetary cost. $W_{p}$, $W_{e}$ and $W_{c}$ represent the weight of performance efficiency, energy efficiency and monetary cost efficiency respectively. Let $S_{p}$ represent speedup; $F_{t}$ represents theoretical peak FLOPS; $F_{p}$ represents practical FLOPS; $P$ represents power consumption; and $C$ represents monetary cost. The unified efficiency metric $E_{u}$ formula is as follows:
 %\vspace{-1mm} 
   \begin{equation}\label{equ:metric1}
     \begin{split}
   {E_{u}} &  = E_{p}W_{p}+E_{e}W_{e}+E_{c}W_{c} \\
-   & = \frac{S_{p}W_{p}}{F_{t}}+\frac{F_{p}W_{e}}{PT_{t}}+\frac{S_{p}W_{c}}{C}
+   & = \frac{S_{p}W_{p}}{F_{t}}+\frac{F_{p}W_{e}}{P}\frac{S_{p}W_{c}}{C}
   \end{split}
 \end{equation}
   
-Let $T_{b}$ denote base execution time and $F_{n}$ denote the number of floating-point operations. Since $S_{p}$ = $T_{b}$ / $T_{t}$ and $F_{p}$ = $F_{n}$ / $T_{t}$, the metric $E_{u}$ is as follows:
+Let $T_{b}$ denote base execution time, $T_{t}$ denote target execution time and $F_{n}$ denote the number of floating-point operations. Since $S_{p}$ = $T_{b}$ / $T_{t}$ and $F_{p}$ = $F_{n}$ / $T_{t}$, the metric $E_{u}$ is as follows:
 %  \vspace{-1mm} 
   \begin{equation}\label{equ:metric1}
     \begin{split}
-  {E_{u}} &  = \frac{S_{p}W_{p}}{F_{t}}+\frac{F_{n}W_{e}}{P{T_{t}}^2}+\frac{S_{p}W_{c}}{C} \\
-   & = {S_{p}}(\frac{W_{p}}{F_{t}}+\frac{F_{n}W_{e}}{PT_{t}T_{b}}+\frac{W_{c}}{C})
+  {E_{u}} &  = \frac{S_{p}W_{p}}{F_{t}}+\frac{F_{n}W_{e}}{PT_{t}}+\frac{S_{p}W_{c}}{C} \\
+   & = {S_{p}}(\frac{W_{p}}{F_{t}}+\frac{F_{n}W_{e}}{PT_{b}}+\frac{W_{c}}{C})
   \end{split}
 \end{equation}
 
   
- To compare the results of three architectues, we calculate the unified efficiency metric with the same value of weight for the three factors and normalize the results based on CPU. From Figure \ref{fig:metric}, GPU is better than MIC and much better than CPU for the benchmarks. This illustrates that when combining performance efficiency, energy efficiency and monetary cost efficiency, GPU performs better compared to CPU and MIC for the benchmarks. Since MIC outperforms CPU for the benchmarks excluding BFS, for some intensive computing applications designed for HPC in heterogeneous computing infrastructures such as BFS, CPU still outperforms MIC when we consider overall benefits.
+ To compare the results of three architectures, we calculate the unified efficiency metric with the same value of weight for the three factors and normalize the results based on CPU. From Figure \ref{fig:metric}, GPU is better than MIC and much better than CPU for the benchmarks. This illustrates that when combining performance efficiency, energy efficiency and monetary cost efficiency, GPU performs better compared to CPU and MIC for the benchmarks. Since MIC outperforms CPU for the benchmarks excluding BFS, for some intensive computing applications designed for HPC in heterogeneous computing infrastructures such as BFS, CPU still outperforms MIC when we consider overall benefits.
+
+

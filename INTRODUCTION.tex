@@ -2,12 +2,12 @@
   High-performance computing systems using accelerators or co-processors have become popular, of which Nvidia GPU and 
 Intel Xeon Phi Many Integrated Cores (MIC) are two main architectures.  
 A general purpose GPU includes 100x to 1000x simpler cores (compared against general-purpose CPU cores) 
-and realizes single instruction multiple thread execution model 
+and realizes a single instruction multiple thread execution model 
 that excels in processing data parallel workloads in which inter-core
 communication are minimum. 
 MIC employs a hybrid many-core architecture combining classic x86 based cores (\verb#~#70 cores) 
 and enhanced vector processing units, thus able to deliver performance improvement for applications with either task parallelism or data parallel, or
-the mix of both than conventional CPUs. The power envolopes of these accelerators and CPUs are also different in both idle and loaded states. 
+the mix of both than conventional CPUs. The power envelopes of these accelerators and CPUs are also different in both idle and loaded states. 
 
 The architectures and programming models of MIC are similar to CPUs,
 allowing for easier migration of legacy applications that were developed for multicore CPUs
@@ -42,7 +42,7 @@ This paper makes the following contributions:
 
 %The development of heterogeneous architectures promotes researchers to develop a lot of benchmark suites to evaluate the emerging class of architectures and to find out the strength and weakness between heterogeneous architectures. The most popular open source benchmark suites targeting heterogeneous architectures include Rodinia, Parboil \cite{R:2} and the Scalable Heterogeneous Computing (SHOC) \cite{R:3}. These benchmark suites provide applications implemented in different programming models for heterogeneous architectures and fulfill roles similar to PARSEC \cite{R:4} and SPEC \cite{R:5} that are other popular benchmark suites managed by an industry consortium. These benchmarks also help architects study programming models and applications concurrently. 
 
-%The Rodinia applications are designed for heterogeneous computing infrastructures using OpenMP, CUDA, and OpenCL \cite{R:7} targeting CPUs and GPUs to evaluate these two architectures separately. It provides representative real world applications from multiple domains such as Data Mining, Linear Algebra, Fluid Dynamics, Graph Algorithms, Physics Simulation ,Bioinformatics, etc. We carry out a set of comprehensive performance analysis by using the OpenMP and CUDA programming models for these applications.  Although the performance analysis is our main motivating purpose, our metric and approaches for comprehensive performance analysis can be used for other heterogeneous benchmark such as Parboil and SHOC. 
+%The Rodinia applications are designed for heterogeneous computing infrastructures using OpenMP, CUDA, and OpenCL \cite{R:7} targeting CPUs and GPUs to evaluate these two architectures separately. It provides representative real world applications from multiple domains such as Data Mining, Linear Algebra, Fluid Dynamics, Graph Algorithms, Physics Simulation ,Bioinformatics, etc. We carry out a set of comprehensive performance analysis by using the OpenMP and CUDA programming models for these applications.  Although the performance analysis is our main motivating purpose, our metric and approaches for comprehensive performance analysis can be used for other heterogeneous benchmarks such as Parboil and SHOC. 
   
 
   
